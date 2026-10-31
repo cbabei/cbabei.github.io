@@ -53,7 +53,11 @@ for (const el of [...jobs, ...bars]) {
 // Career map: start on the most recent years, and let mouse users drag it sideways.
 const scroller = document.querySelector<HTMLElement>('[data-map-scroll]');
 if (scroller) {
-  scroller.scrollLeft = scroller.scrollWidth;
+  // A ResizeObserver runs right after layout, so measuring the map here costs no extra layout.
+  new ResizeObserver((_, observer) => {
+    scroller.scrollLeft = scroller.scrollWidth;
+    observer.disconnect();
+  }).observe(scroller);
   let startX = 0;
   let startLeft = 0;
   let pressed = false;

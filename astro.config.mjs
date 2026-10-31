@@ -46,8 +46,6 @@ export default defineConfig({
       directives: [
         "default-src 'self'",
         "img-src 'self' data:",
-        // Vite inlines the smallest font subsets as data: URLs.
-        "font-src 'self' data:",
         "object-src 'none'",
         "base-uri 'self'",
         "form-action 'none'",
@@ -59,6 +57,10 @@ export default defineConfig({
   },
   // Astro 7 defaults to 'jsx', which drops whitespace between inline tags.
   compressHTML: true,
+  // Put the CSS in each page instead of separate files: one less round trip before the first paint.
+  build: { inlineStylesheets: 'always' },
+  // No code blocks on the site, and Shiki's inline styles would clash with the CSP.
+  markdown: { syntaxHighlight: false },
   i18n: {
     locales: ['en', 'es'],
     defaultLocale: 'en',

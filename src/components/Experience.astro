@@ -71,7 +71,7 @@ function duration(start: string, end: string | null) {
       </span>
     </figcaption>
     {/* Visual summary only: the list below carries the real content. */}
-    <div class="map-scroll" tabindex="0" aria-label={`${t('exp.map')} – ${t('exp.map.hint')}`} data-map-scroll>
+    <div class="map-scroll" role="region" tabindex="0" aria-label={`${t('exp.map')} – ${t('exp.map.hint')}`} data-map-scroll>
       <div class="map-inner" style={`--years:${years.length};--lanes:${lanes.length}`} aria-hidden="true">
         <div class="map-body">
           {years.map((y) => <span class="year-line" style={`left:${pct(y * 12)}%`} />)}

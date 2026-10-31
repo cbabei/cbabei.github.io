@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import photo from '../assets/portrait/cristian.png';
 import Icon from './Icon.astro';
 import { type Lang, localePath, useTranslations } from '../i18n/ui';
@@ -27,7 +27,17 @@ const { Content } = lang === 'es' ? es : en;
     </a>
 
     <header class="story-head">
-      <Image src={photo} alt="" widths={[112, 224]} sizes="112px" class="story-avatar" />
+      <Picture
+        src={photo}
+        alt=""
+        formats={['avif', 'webp']}
+        fallbackFormat="webp"
+        widths={[112, 224]}
+        sizes="112px"
+        loading="eager"
+        fetchpriority="high"
+        class="story-avatar"
+      />
       <div>
         <p class="eyebrow">{site.name}</p>
         <h1 class="story-title">{t('nav.story')}</h1>

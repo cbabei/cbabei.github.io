@@ -27,7 +27,7 @@ const story = { href: localePath(lang, 'about'), label: t('nav.story'), current:
 
 <header class="site-header">
   <div class="container-page flex h-16 items-center justify-between gap-4">
-    <a href={home} class="monogram" aria-label={`Cristian Babei – ${t('nav.home')}`}>
+    <a href={home} class="monogram" aria-label={`CB · Cristian Babei – ${t('nav.home')}`}>
       <span aria-hidden="true">CB</span>
     </a>
 
@@ -86,7 +86,7 @@ const story = { href: localePath(lang, 'about'), label: t('nav.story'), current:
         type="button"
         class="icon-btn lang-btn gap-1.5 pl-3 pr-2.5 font-mono text-xs uppercase"
         popovertarget="lang-menu"
-        aria-label={`${t('lang.label')}: ${languages[lang]}`}
+        aria-label={`${t('lang.label')}: ${lang.toUpperCase()} – ${languages[lang]}`}
         title={t('lang.label')}
       >
         <Icon name="globe" size={16} />

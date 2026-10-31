@@ -1,5 +1,5 @@
 ---
-import { Image, getImage } from 'astro:assets';
+import { Picture, getImage } from 'astro:assets';
 import { type Lang, useTranslations } from '../i18n/ui';
 import { bambiPhotos, hobbies } from '../data/extras';
 import Icon from './Icon.astro';
@@ -58,11 +58,13 @@ const large = await Promise.all(bambiPhotos.map((p) => getImage({ src: p.src, wi
               data-full={large[i].src}
               data-alt={p.alt[lang]}
               data-caption={p.caption[lang]}
-              aria-label={`${t('bambi.enlarge')}: ${p.alt[lang]}`}
+              aria-label={`${p.caption[lang]} – ${t('bambi.enlarge')}: ${p.alt[lang]}`}
             >
-              <Image
+              <Picture
                 src={p.src}
                 alt={p.alt[lang]}
+                formats={['avif', 'webp']}
+                fallbackFormat="webp"
                 widths={[220, 440]}
                 sizes="220px"
                 loading="lazy"

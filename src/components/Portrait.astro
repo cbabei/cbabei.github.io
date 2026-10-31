@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import photo from '../assets/portrait/cristian.png';
 
 interface Props {
@@ -10,12 +10,15 @@ const { class: className } = Astro.props;
 
 {/* Real photo (background removed), cropped at the chest and faded out at the bottom. */}
 <div class:list={['portrait', className]}>
-  <Image
+  <Picture
     src={photo}
     alt="Cristian Babei"
-    widths={[400, 600, 800]}
+    formats={['avif', 'webp']}
+    fallbackFormat="webp"
+    widths={[320, 480, 640, 800]}
     sizes="(min-width: 900px) 24rem, 17rem"
     loading="eager"
+    fetchpriority="high"
     class="portrait-photo"
   />
 </div>
