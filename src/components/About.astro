@@ -1,0 +1,116 @@
+---
+import { type Lang, localePath, useTranslations } from '../i18n/ui';
+import { profile, skillGroups } from '../data/profile';
+import Icon from './Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<div class="about-panel">
+  <section id="about" aria-labelledby="about-title" class="card p-6 md:p-8">
+    <h2 id="about-title" class="section-title">{t('about.title')}</h2>
+    <div class="mt-4 space-y-4 text-muted">
+      {profile.about[lang].map((p) => <p>{p}</p>)}
+    </div>
+
+    <ul class="pillars">
+      {
+        profile.pillars.map((p) => (
+          <li>
+            <span class="pillar-icon">
+              <Icon name={p.icon} size={18} />
+            </span>
+            <span>
+              <strong>{p.title[lang]}</strong>
+              <span class="block text-sm text-muted">{p.text[lang]}</span>
+              {'more' in p && (
+                <a href={`${localePath(lang, 'about')}#${p.more}`} class="pillar-more">
+                  {t('about.strengthsMore')}
+                  <Icon name="arrow-right" size={13} />
+                </a>
+              )}
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+
+    <a href={localePath(lang, 'about')} class="link-arrow mt-6">
+      {t('about.more')}
+      <Icon name="arrow-right" size={16} />
+    </a>
+  </section>
+
+  <section aria-labelledby="skills-title" class="card mt-6 p-6 md:p-8">
+    <h2 id="skills-title" class="text-lg font-bold">{t('skills.title')}</h2>
+    <p class="mt-1 text-sm text-muted">{t('skills.hint')}</p>
+    <div class="mt-5 space-y-4">
+      {
+        skillGroups.map((g) => (
+          <div>
+            <h3 class="mb-2 font-mono text-xs uppercase tracking-widest text-muted">{g.title[lang]}</h3>
+            <ul class="flex flex-wrap gap-2">
+              {g.items.map((s) => (
+                <li class="chip">{s}</li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+</div>
+
+<style>
+  @media (min-width: 1024px) and (min-height: 860px) {
+    .about-panel {
+      position: sticky;
+      /* On shorter screens it sticks higher, so the end of the About card (pillars and link) stays in view. */
+      top: min(5.5rem, calc(100vh - var(--about-h, 0px) - 1.5rem));
+    }
+  }
+  .pillars {
+    margin-top: 1.75rem;
+    display: grid;
+    gap: 1rem;
+  }
+  .pillars li {
+    display: flex;
+    gap: 0.85rem;
+    align-items: flex-start;
+  }
+  .pillar-icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.7rem;
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .pillar-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-top: 0.15rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .pillar-more:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+</style>
+
+<script>
+  const panel = document.querySelector<HTMLElement>('.about-panel');
+  const card = document.getElementById('about');
+  if (panel && card) new ResizeObserver(() => panel.style.setProperty('--about-h', `${card.offsetHeight}px`)).observe(card);
+</script>

@@ -1,0 +1,416 @@
+---
+import { type Lang, useTranslations } from '../i18n/ui';
+import { site } from '../data/profile';
+import BambiDog from './BambiDog.astro';
+import Rabbit from './Rabbit.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
+const fireflies = [8, 21, 37, 52, 66, 79, 91];
+
+// Front grass: a row of blades of varying height, generated once at build time.
+let seed = 7;
+const rand = () => ((seed = (seed * 1664525 + 1013904223) % 4294967296) / 4294967296);
+let grass = 'M0 60V30';
+for (let x = 0; x < 1200; ) {
+  const w = 10 + rand() * 10;
+  const h = 10 + rand() * 18;
+  grass += `L${(x + w * 0.45).toFixed(1)} ${(30 - h).toFixed(1)}L${(x + w).toFixed(1)} 30`;
+  x += w;
+}
+grass += 'V60z';
+---
+
+<footer id="contact" class="site-footer" aria-labelledby="contact-title">
+  <div class="container-page relative z-10 pt-14 text-center md:pt-16">
+    <h2 id="contact-title" class="section-title reveal">{t('contact.title')}</h2>
+    <p class="mx-auto mt-3 max-w-md text-muted reveal">{t('contact.lead')}</p>
+    <div class="mt-8 flex flex-wrap justify-center gap-3 reveal">
+      <a class="btn btn-primary" href={site.linkedin} rel="me noopener" target="_blank">
+        <Icon name="linkedin" size={17} />
+        {t('contact.cta')}
+      </a>
+      <a class="btn btn-ghost" href={site.sapCommunity} rel="me noopener" target="_blank">
+        <Icon name="community" size={17} />
+        SAP Community
+      </a>
+    </div>
+  </div>
+
+  {/* Bambi chases a rabbit across the meadow. Visitors can drag the rabbit and, when one drops in,
+       drag (or click) a treat to give it to him (scripts/meadow.ts). */}
+  <div class="meadow" id="meadow" role="group" aria-label={t('game.label')} data-meadow>
+    <p class="bubble" data-bubble aria-live="polite" data-prompt={t('game.prompt')} data-caught={t('game.caught')} data-treat-prompt={t('game.treatPrompt')} data-yum={t('game.yum')}></p>
+    <p class="score" data-score-wrap hidden>{t('game.score')}: <span data-score>0</span> · {t('game.treats')}: <span data-treats>0</span></p>
+
+    <svg class="grass grass--back" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 120V52c70-26 150-30 230-12 90-26 190-28 280-6 80-22 170-24 250-4 90-24 190-26 280-4 60-14 110-16 160-8v122z" />
+    </svg>
+    {fireflies.map((x, i) => <i class="firefly" style={`left:${x}%;--d:${4 + (i % 3)}s;--delay:${-i * 0.7}s`} aria-hidden="true" />)}
+
+    <div class="actor dog" data-dog aria-hidden="true">
+      <div class="actor-flip"><div class="actor-body"><BambiDog /></div></div>
+    </div>
+    <button type="button" class="actor rabbit" data-rabbit aria-label={t('game.rabbit')}>
+      <span class="actor-flip"><span class="actor-body"><Rabbit /></span></span>
+    </button>
+    <button type="button" class="treat" data-treat hidden aria-label={t('game.treat')}>
+      <svg viewBox="0 0 40 20" aria-hidden="true">
+        <g fill="#e3a65f">
+          <circle cx="7" cy="6" r="5" />
+          <circle cx="7" cy="14" r="5" />
+          <circle cx="33" cy="6" r="5" />
+          <circle cx="33" cy="14" r="5" />
+          <rect x="7" y="5" width="26" height="10" rx="2" />
+        </g>
+        <path d="M12 8.5h16" stroke="#fff" stroke-opacity=".5" stroke-width="1.6" stroke-linecap="round" />
+      </svg>
+    </button>
+    <div class="hearts" data-hearts aria-hidden="true"></div>
+
+    <svg class="grass grass--front" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true">
+      <path d={grass} />
+    </svg>
+  </div>
+
+  <div class="footer-bar">
+    <p>© {year} {site.name} · {t('footer.rights')}</p>
+  </div>
+</footer>
+
+<script>
+  import '../scripts/meadow';
+</script>
+
+<style>
+  .site-footer {
+    position: relative;
+    overflow: hidden;
+    --grass-back: color-mix(in oklab, #9ccf6e, #1f3b2c var(--mix));
+    --grass-front: color-mix(in oklab, #6fae4a, #152b20 var(--mix));
+  }
+
+  .meadow {
+    position: relative;
+    height: 13rem;
+    margin-top: 2.5rem;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .grass {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    bottom: 0;
+    pointer-events: none;
+  }
+  .grass--back {
+    height: 5.5rem;
+    fill: var(--grass-back);
+  }
+  .grass--front {
+    height: 2.4rem;
+    fill: var(--grass-front);
+    z-index: 3;
+  }
+
+  .firefly {
+    position: absolute;
+    bottom: 3rem;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #f8f3a0;
+    box-shadow: 0 0 8px 3px rgb(248 243 160 / 0.6);
+    opacity: calc(var(--p) * 0.9);
+    animation: firefly var(--d) ease-in-out var(--delay) infinite alternate;
+    pointer-events: none;
+  }
+  @keyframes firefly {
+    from {
+      translate: 0 0;
+    }
+    to {
+      translate: 18px -60px;
+    }
+  }
+
+  .actor {
+    position: absolute;
+    left: 0;
+    bottom: 1.1rem;
+    z-index: 2;
+    will-change: transform;
+  }
+  .dog {
+    width: 7.5rem;
+  }
+  @media (max-width: 640px) {
+    .dog {
+      width: 6rem;
+    }
+  }
+  .rabbit {
+    width: 2.9rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: grab;
+    touch-action: none;
+  }
+  .rabbit:active {
+    cursor: grabbing;
+  }
+  .rabbit:focus-visible {
+    outline-offset: 4px;
+    border-radius: 12px;
+  }
+  .actor-flip,
+  .actor-body {
+    display: block;
+  }
+  .actor.face-left .actor-flip {
+    scale: -1 1;
+  }
+
+  /* Static fallback (no JS / reduced motion): Bambi watching the rabbit. */
+  .dog {
+    translate: calc(50vw - 11rem) 0;
+  }
+  .rabbit {
+    translate: calc(50vw + 3rem) 0;
+  }
+  .meadow.is-live .dog,
+  .meadow.is-live .rabbit {
+    translate: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .dog :global(.tail) {
+      animation: wag 0.5s ease-in-out infinite alternate;
+    }
+    .dog.running .actor-body {
+      animation: bob 0.32s ease-in-out infinite;
+    }
+    .dog.running :global(.leg-bn),
+    .dog.running :global(.leg-ff) {
+      animation: stride 0.32s ease-in-out infinite alternate;
+    }
+    .dog.running :global(.leg-bf),
+    .dog.running :global(.leg-fn) {
+      animation: stride 0.32s ease-in-out infinite alternate-reverse;
+    }
+    .dog.running :global(.tongue) {
+      opacity: 1;
+    }
+    .dog.jump .actor-body {
+      animation: jump 0.55s cubic-bezier(0.3, 0.6, 0.4, 1);
+    }
+    .rabbit.hopping .actor-body {
+      animation: hop 0.36s ease-in-out infinite;
+    }
+  }
+  @keyframes wag {
+    from {
+      rotate: -10deg;
+    }
+    to {
+      rotate: 14deg;
+    }
+  }
+  @keyframes stride {
+    from {
+      rotate: -28deg;
+    }
+    to {
+      rotate: 28deg;
+    }
+  }
+  @keyframes bob {
+    50% {
+      translate: 0 -3px;
+    }
+  }
+  @keyframes jump {
+    40% {
+      translate: 0 -34px;
+      rotate: -8deg;
+    }
+  }
+  @keyframes hop {
+    50% {
+      translate: 0 -14px;
+      rotate: -6deg;
+    }
+  }
+  .treat {
+    position: absolute;
+    left: 0;
+    bottom: 1.4rem;
+    z-index: 2;
+    width: 2.4rem;
+    padding: 0.2rem;
+    border: 0;
+    background: none;
+    cursor: grab;
+    touch-action: none;
+    /* Day: a strong coral that stands out on the pale meadow. Night: the golden glow. */
+    --treat-ring: color-mix(in oklab, #e5482f, #f6c453 var(--mix));
+    filter: drop-shadow(0 0 6px color-mix(in oklab, rgb(229 72 47 / 0.55), rgb(255 214 120 / 0.8) var(--mix)));
+    animation: treat-drop 0.6s cubic-bezier(0.3, 0.6, 0.4, 1.3), treat-wiggle 1.2s ease-in-out 0.6s infinite;
+  }
+  .treat[hidden] {
+    display: none;
+  }
+  .treat svg {
+    position: relative;
+    display: block;
+  }
+  .treat:active {
+    cursor: grabbing;
+  }
+  /* Pulsing rings so a fresh treat is easy to spot, even on a wide screen. */
+  .treat::before,
+  .treat::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 3.2rem;
+    aspect-ratio: 1;
+    border: calc(3px - var(--p) * 1px) solid var(--treat-ring);
+    border-radius: 50%;
+    translate: -50% -50%;
+    opacity: 0;
+    pointer-events: none;
+    animation: treat-ping 1.6s ease-out 0.5s infinite;
+  }
+  .treat::after {
+    animation-delay: 1.3s;
+  }
+  .treat.given {
+    animation: none;
+  }
+  .treat.given::before,
+  .treat.given::after {
+    display: none;
+  }
+  @keyframes treat-ping {
+    from {
+      scale: 0.5;
+      opacity: 0.9;
+    }
+    to {
+      scale: 2.2;
+      opacity: 0;
+    }
+  }
+  .treat:focus-visible {
+    outline-offset: 3px;
+    border-radius: 8px;
+  }
+  @keyframes treat-drop {
+    from {
+      translate: 0 -8rem;
+      opacity: 0;
+    }
+  }
+  @keyframes treat-wiggle {
+    50% {
+      rotate: -10deg;
+      scale: 1.08;
+    }
+  }
+
+  .rabbit.caught {
+    scale: 0;
+    opacity: 0;
+    transition: scale 0.35s, opacity 0.35s;
+  }
+
+  .bubble {
+    position: absolute;
+    left: 50%;
+    top: 0.25rem;
+    translate: -50% 0;
+    z-index: 4;
+    max-width: calc(100% - 2rem);
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    background: var(--surface-strong);
+    border: 1px solid var(--line);
+    box-shadow: 0 8px 20px -10px var(--shadow);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.4s, translate 0.4s;
+    pointer-events: none;
+  }
+  .bubble.show {
+    opacity: 1;
+    translate: -50% 0.25rem;
+  }
+  .score {
+    position: absolute;
+    right: 1.25rem;
+    top: 0.5rem;
+    z-index: 4;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .hearts {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 4;
+  }
+  .hearts :global(i) {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: #ef5d7a;
+    rotate: 45deg;
+    animation: heart 1.1s ease-out forwards;
+  }
+  .hearts :global(i)::before,
+  .hearts :global(i)::after {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: inherit;
+  }
+  .hearts :global(i)::before {
+    left: -7px;
+  }
+  .hearts :global(i)::after {
+    top: -7px;
+  }
+  @keyframes heart {
+    to {
+      translate: var(--dx) -70px;
+      opacity: 0;
+      scale: 0.6;
+    }
+  }
+
+  .footer-bar {
+    position: relative;
+    z-index: 3;
+    padding: 1rem 1rem 1.5rem;
+    background: var(--grass-front);
+    text-align: center;
+    font-size: 0.8rem;
+    color: color-mix(in oklab, #f2f8ec, #a9c0b2 var(--mix));
+  }
+</style>

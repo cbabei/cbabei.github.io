@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import { localePath, useTranslations } from '../i18n/ui';
+import Icon from '../components/Icon.astro';
+
+const en = useTranslations('en');
+const es = useTranslations('es');
+---
+
+<Base lang="en" page="404" title={`404 – ${en('notfound.title')}`} description={en('notfound.text')} noindex>
+  <section class="container-page grid min-h-[60vh] place-content-center gap-4 py-24 text-center">
+    <p class="font-mono text-7xl font-extrabold tracking-tighter text-accent">404</p>
+    <h1 class="section-title">{en('notfound.title')}</h1>
+    <p class="text-muted">{en('notfound.text')}</p>
+    <p class="text-muted" lang="es">{es('notfound.text')}</p>
+    <div class="mt-4 flex justify-center gap-3">
+      <a class="btn btn-primary" href={localePath('en')}><Icon name="arrow-left" size={16} />{en('nav.home')}</a>
+      <a class="btn btn-ghost" href={localePath('es')} lang="es">{es('nav.home')}</a>
+    </div>
+  </section>
+</Base>

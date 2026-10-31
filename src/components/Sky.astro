@@ -1,0 +1,168 @@
+---
+// Seeded PRNG so the star field is identical on every build (no layout shift between deploys).
+function rng(seed: number) {
+  return () => {
+    seed = (seed * 1664525 + 1013904223) % 4294967296;
+    return seed / 4294967296;
+  };
+}
+const rand = rng(42);
+const pick = (min: number, max: number) => min + rand() * (max - min);
+
+const shadowLayer = (count: number, alpha: number) =>
+  Array.from({ length: count }, () => `${pick(0, 100).toFixed(2)}vw ${pick(0, 100).toFixed(2)}vh 0 0 rgb(255 255 255 / ${alpha})`).join(',');
+
+const smallStars = shadowLayer(110, 0.55);
+const mediumStars = shadowLayer(40, 0.85);
+const twinkles = Array.from({ length: 14 }, () => ({
+  x: pick(2, 98).toFixed(2),
+  y: pick(2, 90).toFixed(2),
+  d: pick(2.5, 6).toFixed(2),
+  delay: pick(-6, 0).toFixed(2),
+  s: pick(2, 3.5).toFixed(1),
+}));
+
+const clouds = [
+  { top: 9, left: 8, w: 220, dur: 170, delay: -40, o: 0.95 },
+  { top: 20, left: 62, w: 160, dur: 210, delay: -120, o: 0.8 },
+  { top: 34, left: 30, w: 120, dur: 240, delay: -10, o: 0.6 },
+  { top: 52, left: 80, w: 260, dur: 260, delay: -190, o: 0.45 },
+  { top: 72, left: 15, w: 180, dur: 230, delay: -75, o: 0.4 },
+];
+---
+
+<div class="sky-gradient" aria-hidden="true"></div>
+<div class="sky" aria-hidden="true">
+  <div class="stars">
+    <i class="stars-layer" style={`box-shadow:${smallStars}`}></i>
+    <i class="stars-layer stars-layer--md" style={`box-shadow:${mediumStars}`}></i>
+    {
+      twinkles.map((s) => (
+        <i class="twinkle" style={`left:${s.x}%;top:${s.y}%;--d:${s.d}s;--delay:${s.delay}s;--s:${s.s}px`} />
+      ))
+    }
+    <i class="shooting-star"></i>
+  </div>
+  <div class="clouds">
+    {
+      clouds.map((c) => (
+        <svg
+          class="cloud"
+          viewBox="0 0 176 80"
+          style={`top:${c.top}%;left:${c.left}%;width:${c.w}px;--dur:${c.dur}s;--delay:${c.delay}s;--o:${c.o}`}
+        >
+          <path d="M34 72C14 72 6 60 8 49c2-11 12-17 22-15 2-15 14-24 29-23 11 1 19 7 23 15 6-10 17-15 29-13 17 3 27 17 25 33 13 0 23 8 23 18 0 6-4 8-9 8z" />
+        </svg>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .sky-gradient {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 115vh;
+    z-index: -3;
+    pointer-events: none;
+    background: linear-gradient(to bottom, var(--sky-top), var(--sky-mid) 45%, var(--bg));
+  }
+
+  .sky {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .stars {
+    position: absolute;
+    inset: 0;
+    opacity: var(--p);
+  }
+  .stars-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 1px;
+    border-radius: 50%;
+  }
+  .stars-layer--md {
+    width: 2px;
+    height: 2px;
+  }
+  .twinkle {
+    position: absolute;
+    width: var(--s);
+    height: var(--s);
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 6px 1px rgb(255 255 255 / 0.7);
+    animation: twinkle var(--d) ease-in-out var(--delay) infinite;
+  }
+  @keyframes twinkle {
+    0%,
+    100% {
+      opacity: 0.2;
+      scale: 0.6;
+    }
+    50% {
+      opacity: 1;
+      scale: 1;
+    }
+  }
+
+  .shooting-star {
+    position: absolute;
+    top: 12%;
+    left: 70%;
+    width: 120px;
+    height: 1.5px;
+    border-radius: 999px;
+    background: linear-gradient(to left, #fff, transparent);
+    opacity: 0;
+    rotate: -24deg;
+    animation: shoot 11s ease-in 3s infinite;
+  }
+  @keyframes shoot {
+    0% {
+      opacity: 0;
+      translate: 0 0;
+    }
+    2% {
+      opacity: 1;
+    }
+    7% {
+      opacity: 0;
+      translate: -340px 150px;
+    }
+    100% {
+      opacity: 0;
+      translate: -340px 150px;
+    }
+  }
+
+  .clouds {
+    position: absolute;
+    inset: 0;
+    opacity: calc(1 - var(--p) * 0.55);
+  }
+  .cloud {
+    position: absolute;
+    height: auto;
+    fill: var(--cloud);
+    opacity: var(--o);
+    animation: drift var(--dur) linear var(--delay) infinite;
+    will-change: transform;
+  }
+  @keyframes drift {
+    from {
+      transform: translateX(-120vw);
+    }
+    to {
+      transform: translateX(120vw);
+    }
+  }
+</style>

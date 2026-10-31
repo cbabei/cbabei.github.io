@@ -1,0 +1,249 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/jetbrains-mono';
+
+/*
+  Theme engine: --p is 0 by day and 1 by night. Every colour token is a mix between
+  its day and night value, so animating --p animates the whole page (sky, sun→moon,
+  stars, clouds, text) in sync.
+*/
+@property --p {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+:root {
+  --p: 0;
+  --mix: calc(var(--p) * 100%);
+
+  --sky-top: color-mix(in oklab, #9fd0ff, #040a17 var(--mix));
+  --sky-mid: color-mix(in oklab, #d7ebff, #0a1529 var(--mix));
+  --bg: color-mix(in oklab, #f3f8fd, #0a1426 var(--mix));
+  --surface: color-mix(in oklab, rgb(255 255 255 / 0.78), rgb(17 34 64 / 0.62) var(--mix));
+  --surface-strong: color-mix(in oklab, #ffffff, #10203b var(--mix));
+  --fg: color-mix(in oklab, #0f1d33, #dde7f5 var(--mix));
+  --muted: color-mix(in oklab, #475a74, #92a6c2 var(--mix));
+  --accent: color-mix(in oklab, #0b63c1, #64e1c9 var(--mix));
+  --accent-soft: color-mix(in oklab, rgb(11 99 193 / 0.1), rgb(100 225 201 / 0.12) var(--mix));
+  --line: color-mix(in oklab, #d3dfec, #1d2f4f var(--mix));
+  --cloud: color-mix(in oklab, #ffffff, #1a2a47 var(--mix));
+  --glow: color-mix(in oklab, rgb(255 170 60 / 0.42), rgb(100 225 201 / 0.07) var(--mix));
+  --shadow: color-mix(in oklab, rgb(15 40 80 / 0.08), rgb(0 0 0 / 0.35) var(--mix));
+
+  color-scheme: light;
+  transition: --p 1.6s cubic-bezier(0.55, 0, 0.3, 1);
+}
+
+:root[data-theme='dark'] {
+  --p: 1;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --p: 1;
+    color-scheme: dark;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    transition: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@theme inline {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-line: var(--line);
+  --color-surface: var(--surface);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: var(--accent);
+    color: var(--bg);
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  a {
+    color: inherit;
+  }
+}
+
+@layer components {
+  .container-page {
+    width: 100%;
+    max-width: 72rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 768px) {
+    .container-page {
+      padding-inline: 2rem;
+    }
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 1.25rem;
+    box-shadow: 0 1px 2px var(--shadow), 0 12px 32px -12px var(--shadow);
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .section-title {
+    font-size: clamp(1.6rem, 3.2vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border: 1px solid transparent;
+    white-space: nowrap;
+  }
+  button.chip {
+    cursor: pointer;
+    transition: border-color 0.2s, background-color 0.2s, transform 0.2s;
+  }
+  button.chip:hover {
+    border-color: var(--accent);
+  }
+  button.chip:active {
+    transform: scale(0.96);
+  }
+  button.chip[aria-pressed='true'] {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  /* Straight horizontal rule between home sections, fading out at both ends. */
+  .section-divider {
+    height: 1px;
+    margin: 0;
+    border: 0;
+    background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--muted) 40%, transparent) 15% 85%, transparent);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: transform 0.25s cubic-bezier(0.3, 0.7, 0.4, 1.5), box-shadow 0.25s, background-color 0.25s;
+  }
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+    box-shadow: 0 8px 24px -10px var(--accent);
+  }
+  .btn-ghost {
+    border: 1px solid var(--line);
+    background: var(--surface);
+  }
+  .btn-ghost:hover {
+    border-color: var(--accent);
+  }
+
+  .link-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .link-arrow svg {
+    transition: transform 0.25s;
+  }
+  .link-arrow:hover svg {
+    transform: translateX(4px);
+  }
+
+  .sr-only-focusable:not(:focus) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* Reveal on scroll: pure CSS, only where supported and motion is welcome. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+    }
+  }
+}
+@keyframes reveal {
+  from {
+    opacity: 0;
+    translate: 0 28px;
+    scale: 0.98;
+  }
+}
+
+/* Smooth cross-page transitions (language switch, story page) without a JS router. */
+@view-transition {
+  navigation: auto;
+}

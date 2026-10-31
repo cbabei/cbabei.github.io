@@ -1,0 +1,175 @@
+---
+import '../styles/global.css';
+import { type Lang, localePath, otherLang, useTranslations } from '../i18n/ui';
+import { site } from '../data/profile';
+import Header from '../components/Header.astro';
+import Sky from '../components/Sky.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  lang: Lang;
+  /** Language-neutral slug: '' for home, 'about' for /about/ */
+  page: string;
+  title: string;
+  description: string;
+  jsonLd?: object;
+  noindex?: boolean;
+}
+
+const { lang, page, title, description, jsonLd, noindex = false } = Astro.props;
+const t = useTranslations(lang);
+const canonical = new URL(localePath(lang, page), site.url).href;
+const alternates = (['en', 'es'] as const).map((l) => ({
+  lang: l,
+  href: new URL(localePath(l, page), site.url).href,
+}));
+const ogImage = new URL(`/og-${lang}.png`, site.url).href;
+const ogLocale = { en: 'en_US', es: 'es_ES' } as const;
+---
+
+<!doctype html>
+<html lang={lang} dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={site.name} />
+    {
+      noindex ? (
+        <meta name="robots" content="noindex" />
+      ) : (
+        <>
+          <link rel="canonical" href={canonical} />
+          {alternates.map((a) => (
+            <link rel="alternate" hreflang={a.lang} href={a.href} />
+          ))}
+          <link rel="alternate" hreflang="x-default" href={alternates[0].href} />
+        </>
+      )
+    }
+
+    <meta name="theme-color" content="#f3f8fd" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0a1426" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content="profile" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={ogLocale[lang]} />
+    <meta property="og:locale:alternate" content={ogLocale[otherLang(lang)]} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title} />
+    <meta property="profile:first_name" content={site.firstName} />
+    <meta property="profile:last_name" content={site.lastName} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+
+    {/* Apply the theme before first paint to avoid a flash: the visitor's choice for this
+         visit, otherwise night from 18:00 to 07:00 local time and day the rest. */}
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        let theme;
+        try {
+          theme = sessionStorage.getItem('theme');
+        } catch {}
+        if (theme === 'light' || theme === 'dark') {
+          root.classList.add('theme-touched');
+        } else {
+          const hour = new Date().getHours();
+          theme = hour >= 18 || hour < 7 ? 'dark' : 'light';
+        }
+        root.dataset.theme = theme;
+      })();
+    </script>
+  </head>
+  <body class="relative min-h-dvh overflow-x-clip">
+    <a href="#main" class="sr-only-focusable fixed left-4 top-4 z-50 rounded-full bg-accent px-4 py-2 font-semibold text-bg">
+      {t('skip')}
+    </a>
+    <Sky />
+    <div class="spotlight" aria-hidden="true"></div>
+    <Header lang={lang} page={page} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+
+    {/* Keep the reading position when switching language (both pages share element ids). */}
+    <script is:inline>
+      (() => {
+        const KEY = 'lang-scroll';
+        const root = document.documentElement;
+        const anchors = () =>
+          [...document.querySelectorAll('main [id], footer[id], footer [id]')].filter((el) => el.getClientRects().length);
+
+        document.addEventListener('click', (e) => {
+          const link = e.target.closest('[data-lang-switch]');
+          if (!link) return;
+          let best = null;
+          for (const el of anchors()) {
+            const top = el.getBoundingClientRect().top;
+            if (top <= 90 && (!best || top > best.top)) best = { id: el.id, top };
+          }
+          const max = Math.max(1, root.scrollHeight - innerHeight);
+          const data = { id: best && best.id, offset: best ? -best.top : 0, ratio: scrollY / max };
+          try {
+            sessionStorage.setItem(KEY, JSON.stringify(data));
+          } catch {}
+        });
+
+        let saved = null;
+        try {
+          saved = JSON.parse(sessionStorage.getItem(KEY));
+          sessionStorage.removeItem(KEY);
+        } catch {}
+        if (!saved) return;
+        let userMoved = false;
+        const stop = () => (userMoved = true);
+        ['wheel', 'touchstart', 'keydown', 'pointerdown'].forEach((t) => addEventListener(t, stop, { once: true, passive: true }));
+        const restore = () => {
+          if (userMoved) return;
+          const target = saved.id && document.getElementById(saved.id);
+          const y = target
+            ? target.getBoundingClientRect().top + scrollY + saved.offset
+            : saved.ratio * Math.max(0, root.scrollHeight - innerHeight);
+          root.style.scrollBehavior = 'auto';
+          scrollTo(0, y);
+          root.style.scrollBehavior = '';
+        };
+        // Once now, then again whenever late fonts/images change the layout during the first seconds.
+        restore();
+        const ro = new ResizeObserver(restore);
+        ro.observe(document.body);
+        setTimeout(() => ro.disconnect(), 2500);
+      })();
+    </script>
+
+    <script>
+      import '../scripts/theme';
+      import '../scripts/spotlight';
+    </script>
+  </body>
+</html>
+
+<style>
+  .spotlight {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(600px circle at var(--mx, 50%) var(--my, -30%), var(--glow), transparent 70%);
+  }
+  /* By day the glow tints like warm sunlight instead of washing the page out in white. */
+  :global(:root[data-theme='light']) .spotlight {
+    mix-blend-mode: multiply;
+  }
+</style>

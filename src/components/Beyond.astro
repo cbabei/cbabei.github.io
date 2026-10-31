@@ -1,0 +1,334 @@
+---
+import { Image, getImage } from 'astro:assets';
+import { type Lang, useTranslations } from '../i18n/ui';
+import { bambiPhotos, hobbies } from '../data/extras';
+import Icon from './Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const tilts = [-6, 4, -3, 5];
+const large = await Promise.all(bambiPhotos.map((p) => getImage({ src: p.src, width: 1000, format: 'webp' })));
+---
+
+<section id="beyond" aria-labelledby="beyond-title" class="container-page pt-12 md:pt-16">
+  <div class="reveal">
+    <h2 id="beyond-title" class="section-title">{t('beyond.title')}</h2>
+    <p class="mt-3 text-muted">{t('beyond.lead')}</p>
+  </div>
+
+  <ul class="hobby-grid">
+    {
+      hobbies.map((h) => (
+        <li class={`hobby hobby--${h.icon} card reveal`}>
+          <div class="flex items-center gap-3">
+            <span class="hobby-icon">
+              <Icon name={h.icon} size={22} />
+            </span>
+            <h3 class="text-lg font-bold">{h.title[lang]}</h3>
+          </div>
+          <p class="mt-3 text-sm text-muted">{h.text[lang]}</p>
+        </li>
+      ))
+    }
+  </ul>
+
+  <div class="bambi card reveal" id="bambi">
+    <div class="bambi-copy">
+      <div class="flex items-center gap-3">
+        <span class="hobby-icon"><Icon name="paw" size={22} /></span>
+        <h3 class="text-2xl font-bold tracking-tight">{t('bambi.title')}</h3>
+      </div>
+      <p class="mt-2 text-muted">{t('bambi.text')}</p>
+      <a href="#meadow" class="link-arrow mt-5">
+        {t('game.label')}
+        <Icon name="arrow-down" size={16} />
+      </a>
+    </div>
+    <ul class="polaroids" aria-label={t('bambi.gallery')}>
+      {
+        bambiPhotos.map((p, i) => (
+          <li style={`--tilt:${tilts[i % tilts.length]}deg;--i:${i}`}>
+            <a
+              class="polaroid"
+              href={large[i].src}
+              data-lightbox={i}
+              data-full={large[i].src}
+              data-alt={p.alt[lang]}
+              data-caption={p.caption[lang]}
+              aria-label={`${t('bambi.enlarge')}: ${p.alt[lang]}`}
+            >
+              <Image
+                src={p.src}
+                alt={p.alt[lang]}
+                widths={[220, 440]}
+                sizes="220px"
+                loading="lazy"
+                class="polaroid-img"
+              />
+              <span class="polaroid-caption" aria-hidden="true">{p.caption[lang]}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <dialog class="lightbox" data-lightbox-dialog aria-label={t('bambi.gallery')}>
+    <figure>
+      <img src="" alt="" data-lightbox-img />
+      <figcaption data-lightbox-caption></figcaption>
+    </figure>
+    <button type="button" class="lb-btn lb-close" data-lightbox-close aria-label={t('lightbox.close')}>×</button>
+    <button type="button" class="lb-btn lb-prev" data-lightbox-prev aria-label={t('lightbox.prev')}><Icon name="arrow-left" size={20} /></button>
+    <button type="button" class="lb-btn lb-next" data-lightbox-next aria-label={t('lightbox.next')}><Icon name="arrow-right" size={20} /></button>
+  </dialog>
+</section>
+
+<script>
+  import '../scripts/lightbox';
+</script>
+
+<style>
+  .hobby-grid {
+    margin-top: 2.5rem;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  }
+  .hobby {
+    padding: 1.25rem 1.4rem 1.4rem;
+    transition: transform 0.35s cubic-bezier(0.3, 0.7, 0.4, 1.4), border-color 0.3s;
+  }
+  .hobby:hover {
+    transform: translateY(-4px) rotate(-0.6deg);
+    border-color: var(--accent);
+  }
+  .hobby-icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.85rem;
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .hobby--padel:hover .hobby-icon :global(svg) {
+      animation: swing 0.7s ease-in-out;
+    }
+    .hobby--gamepad:hover .hobby-icon :global(svg) {
+      animation: wiggle 0.5s ease-in-out 2;
+    }
+    .hobby--book:hover .hobby-icon :global(svg) {
+      animation: flip 0.8s ease-in-out;
+    }
+    .hobby--heart:hover .hobby-icon :global(svg) {
+      animation: beat 0.8s ease-in-out;
+    }
+  }
+  @keyframes swing {
+    40% {
+      rotate: -35deg;
+    }
+    70% {
+      rotate: 15deg;
+    }
+  }
+  @keyframes wiggle {
+    25% {
+      rotate: -10deg;
+    }
+    75% {
+      rotate: 10deg;
+    }
+  }
+  @keyframes flip {
+    50% {
+      scale: -1 1;
+    }
+  }
+  @keyframes beat {
+    25%,
+    65% {
+      scale: 1.25;
+    }
+    45% {
+      scale: 1;
+    }
+  }
+
+  .bambi {
+    margin-top: 1rem;
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+    padding: 1.75rem;
+    overflow: hidden;
+  }
+  @media (min-width: 900px) {
+    .bambi {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+      padding: 2.25rem;
+    }
+  }
+
+  .polaroids {
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 1rem 0.75rem 1.25rem;
+    scrollbar-width: thin;
+  }
+  .polaroids li {
+    flex: none;
+    width: 11rem;
+    scroll-snap-align: center;
+  }
+  .polaroid {
+    display: block;
+    padding: 0.55rem 0.55rem 0.4rem;
+    background: #fdfcf8;
+    border-radius: 4px;
+    box-shadow: 0 10px 24px -8px rgb(0 0 0 / 0.35);
+    text-decoration: none;
+    cursor: zoom-in;
+    rotate: var(--tilt);
+    transition: rotate 0.45s cubic-bezier(0.3, 0.7, 0.4, 1.4), translate 0.45s cubic-bezier(0.3, 0.7, 0.4, 1.4), scale 0.45s;
+  }
+  .polaroid :global(.polaroid-img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: 2px;
+  }
+  .polaroid-caption {
+    display: block;
+    padding-top: 0.45rem;
+    text-align: center;
+    font-family: 'Segoe Print', 'Bradley Hand', 'Comic Sans MS', cursive;
+    font-size: 0.85rem;
+    line-height: 1.3;
+    color: #3a3a3a;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .polaroids li:hover .polaroid,
+  .polaroid:focus-visible {
+    rotate: 0deg;
+    translate: 0 -8px;
+    scale: 1.04;
+  }
+
+  /* Desktop: a slightly overlapping fan that shrinks to fit its column and opens on hover. */
+  @media (min-width: 900px) and (pointer: fine) {
+    .polaroids {
+      overflow: visible;
+      justify-content: center;
+      gap: 0;
+      padding: 1.5rem 1rem;
+    }
+    /* Layout never changes on hover (no reflow); only the hovered photo lifts. */
+    .polaroids li {
+      flex: 0 1 10.5rem;
+      width: auto;
+      min-width: 7rem;
+      margin-inline: -0.4rem;
+      z-index: calc(5 - var(--i));
+    }
+    .polaroids li:hover {
+      z-index: 10;
+    }
+  }
+
+  .lightbox {
+    max-width: min(92vw, 44rem);
+    max-height: 92dvh;
+    margin: auto;
+    padding: 0;
+    border: 0;
+    border-radius: 6px;
+    background: #fdfcf8;
+    box-shadow: 0 30px 80px -20px rgb(0 0 0 / 0.6);
+    overflow: visible;
+  }
+  .lightbox::backdrop {
+    background: rgb(4 10 23 / 0.75);
+    backdrop-filter: blur(4px);
+  }
+  .lightbox figure {
+    padding: 0.75rem 0.75rem 0.5rem;
+  }
+  .lightbox img {
+    display: block;
+    max-width: 100%;
+    max-height: calc(92dvh - 5rem);
+    margin-inline: auto;
+    border-radius: 3px;
+  }
+  .lightbox figcaption {
+    padding-top: 0.5rem;
+    text-align: center;
+    font-family: 'Segoe Print', 'Bradley Hand', 'Comic Sans MS', cursive;
+    font-size: 1.05rem;
+    color: #3a3a3a;
+  }
+  .lightbox[open] {
+    animation: pop 0.3s cubic-bezier(0.3, 0.7, 0.4, 1.3);
+  }
+  @keyframes pop {
+    from {
+      opacity: 0;
+      scale: 0.92;
+    }
+  }
+  .lb-btn {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    border: 0;
+    background: #fdfcf8;
+    color: #1d2433;
+    font-size: 1.5rem;
+    line-height: 1;
+    box-shadow: 0 6px 18px -6px rgb(0 0 0 / 0.5);
+    cursor: pointer;
+  }
+  .lb-close {
+    top: -1rem;
+    right: -1rem;
+  }
+  .lb-prev,
+  .lb-next {
+    top: 50%;
+    translate: 0 -50%;
+  }
+  .lb-prev {
+    left: -1.3rem;
+  }
+  .lb-next {
+    right: -1.3rem;
+  }
+  @media (max-width: 640px) {
+    .lb-prev {
+      left: 0.4rem;
+    }
+    .lb-next {
+      right: 0.4rem;
+    }
+    .lb-close {
+      right: 0.4rem;
+      top: 0.4rem;
+    }
+  }
+</style>
