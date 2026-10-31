@@ -34,7 +34,7 @@ const og = ({ role, line }) => `
   <path d="M0 630V540c80-50 170-55 230-20 50-60 170-70 220-10 60-50 160-46 210 8 70-66 200-70 260-4 60-40 140-42 190 4 40-30 70-34 90-28v130z" fill="#16243f"/>
   <text x="90" y="250" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="30" fill="#64e1c9" letter-spacing="6">CRISTIANBABEI.COM</text>
   <text x="86" y="350" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="104" font-weight="800" fill="#e8eef8" letter-spacing="-3">Cristian Babei</text>
-  <text x="90" y="420" font-family="Consolas, JetBrains Mono, monospace" font-size="36" font-weight="700" fill="#64e1c9">${role}</text>
+  <text x="90" y="420" font-family="Consolas, monospace" font-size="36" font-weight="700" fill="#64e1c9">${role}</text>
   <text x="90" y="476" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="30" fill="#9fb2cc">${line}</text>
 </svg>`;
 
