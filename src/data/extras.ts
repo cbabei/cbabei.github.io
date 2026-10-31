@@ -203,8 +203,8 @@ export const hobbies: Hobby[] = [
     icon: 'heart',
     title: { en: 'Family', es: 'Familia' },
     text: {
-      en: 'Married to Anamar, with a dog called Bambi (meet him below). We love to travel and enjoy a good meal together.',
-      es: 'Casado con Anamar y con un perro que se llama Bambi (te lo presento más abajo). Nos encanta viajar y disfrutar juntos de una buena comida.',
+      en: 'Married, with a dog called Bambi (meet him below). We love to travel and enjoy a good meal together.',
+      es: 'Casado y con un perro que se llama Bambi (te lo presento más abajo). Nos encanta viajar y disfrutar juntos de una buena comida.',
     },
   },
   {
