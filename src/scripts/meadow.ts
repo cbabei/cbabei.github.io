@@ -5,7 +5,17 @@
 const meadow = document.querySelector<HTMLElement>('[data-meadow]');
 const calm = matchMedia('(prefers-reduced-motion: reduce)');
 
-if (meadow && !calm.matches) start(meadow);
+// Start only when the footer gets close, so the game doesn't measure the page while it loads.
+if (meadow && !calm.matches) {
+  new IntersectionObserver(
+    (entries, observer) => {
+      if (!entries[0].isIntersecting) return;
+      observer.disconnect();
+      start(meadow);
+    },
+    { rootMargin: '400px 0px' },
+  ).observe(meadow);
+}
 
 function start(meadow: HTMLElement) {
   const dogEl = meadow.querySelector<HTMLElement>('[data-dog]')!;
