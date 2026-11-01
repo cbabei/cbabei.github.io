@@ -3,8 +3,8 @@
 import sharp from 'sharp';
 
 const copy = {
-  en: { role: 'SAP Fiori · UI5 · ABAP · UX', line: 'Senior Consultant · Remote, Spain' },
-  es: { role: 'SAP Fiori · UI5 · ABAP · UX', line: 'Consultor Senior · Remoto, España' },
+  en: { role: 'SAP Fiori · ABAP · UX/UI · AI', line: 'Senior SAP Full-Stack Developer · Remote, Spain' },
+  es: { role: 'SAP Fiori · ABAP · UX/UI · IA', line: 'Desarrollador SAP Full Stack Senior · Remoto, España' },
 };
 
 const stars = Array.from({ length: 70 }, (_, i) => {

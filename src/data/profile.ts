@@ -15,6 +15,7 @@ export const site = {
   lastName: 'Babei',
   linkedin: 'https://www.linkedin.com/in/cristian-babei',
   sapCommunity: 'https://community.sap.com/t5/user/viewprofilepage/user-id/39513',
+  credly: 'https://www.credly.com/users/cristian-babei',
   // Extra profile for the Person schema (sameAs); left empty so it is not listed.
   github: '',
 };

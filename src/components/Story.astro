@@ -19,7 +19,7 @@ const description = t('meta.story.description');
 const { Content } = lang === 'es' ? es : en;
 ---
 
-<Base lang={lang} page="about" title={title} description={description} jsonLd={profileSchema(lang, 'about', title, description)}>
+<Base lang={lang} page="about" title={title} description={description} jsonLd={await profileSchema(lang, 'about', title, description)}>
   <article class="container-page story">
     <a href={localePath(lang)} class="link-arrow back">
       <Icon name="arrow-left" size={16} />

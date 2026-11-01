@@ -80,7 +80,8 @@ const large = await Promise.all(bambiPhotos.map((p) => getImage({ src: p.src, wi
 
   <dialog class="lightbox" data-lightbox-dialog aria-label={t('bambi.gallery')}>
     <figure>
-      <img src="" alt="" data-lightbox-img />
+      {/* Lazy, so the closed dialog doesn't download it; the script swaps in the photo that was clicked. */}
+      <img src={large[0].src} alt={bambiPhotos[0].alt[lang]} loading="lazy" data-lightbox-img />
       <figcaption data-lightbox-caption></figcaption>
     </figure>
     <button type="button" class="lb-btn lb-close" data-lightbox-close aria-label={t('lightbox.close')}>×</button>

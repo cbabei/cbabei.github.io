@@ -168,7 +168,7 @@ export const jobs: Job[] = [
         'Applied Design Thinking to build intuitive, user-centred business apps.',
       ],
       es: [
-        'SAP full-stack (ABAP + SAPUI5) con metodología Agile en proyectos internacionales en Finlandia: Cash Management, Forecast Manager y Project Cost Planning.',
+        'SAP full stack (ABAP + SAPUI5) con metodología Agile en proyectos internacionales en Finlandia: Cash Management, Forecast Manager y Project Cost Planning.',
         'Design Thinking aplicado para crear apps de negocio intuitivas y centradas en el usuario.',
       ],
     },
@@ -221,7 +221,7 @@ export const jobs: Job[] = [
     location: { en: 'Asturias, Spain', es: 'Asturias, España' },
     highlights: {
       en: ['Full-stack web development: WordPress and Joomla sites plus custom apps in Java, PHP and JavaScript.'],
-      es: ['Desarrollo web full-stack: sitios WordPress y Joomla y apps a medida en Java, PHP y JavaScript.'],
+      es: ['Desarrollo web full stack: sitios WordPress y Joomla y apps a medida en Java, PHP y JavaScript.'],
     },
     tech: ['JavaScript'],
   },

@@ -10,9 +10,9 @@ export const ui = {
     'meta.title': 'Cristian Babei – SAP Full-Stack Developer (Fiori, ABAP & AI)',
     'meta.description':
       'Cristian Babei, SAP full-stack developer based in Spain: Fiori, UI5, ABAP and AI. SAP certified, with experience in RAP, OData, SAP BAIP and UX.',
-    'meta.story.title': 'My story – Cristian Babei',
+    'meta.story.title': 'My story – Cristian Babei, SAP Full-Stack Developer',
     'meta.story.description':
-      'The long version: how I went from web development to leading SAP projects, learning all the way.',
+      'The long version: how I went from web development to leading SAP Fiori, ABAP and AI projects, learning all the way.',
     'skip': 'Skip to content',
     'nav.about': 'About',
     'nav.experience': 'Experience',
@@ -100,9 +100,9 @@ export const ui = {
     'meta.title': 'Cristian Babei – Desarrollador SAP Full Stack (Fiori, ABAP e IA)',
     'meta.description':
       'Cristian Babei, desarrollador SAP full stack en España: Fiori, UI5, ABAP e IA. Certificado por SAP, con experiencia en RAP, OData, SAP BAIP y UX.',
-    'meta.story.title': 'Mi historia – Cristian Babei',
+    'meta.story.title': 'Mi historia – Cristian Babei, desarrollador SAP full stack',
     'meta.story.description':
-      'La versión larga: cómo pasé del desarrollo web a liderar proyectos SAP, sin dejar de aprender por el camino.',
+      'La versión larga: cómo pasé del desarrollo web a liderar proyectos SAP de Fiori, ABAP e IA, sin dejar de aprender por el camino.',
     'skip': 'Saltar al contenido',
     'nav.about': 'Sobre mí',
     'nav.experience': 'Experiencia',
@@ -176,8 +176,8 @@ export const ui = {
     'game.prompt': '¡Atrapa al conejo! Arrástralo hasta Bambi',
     'game.caught': '¡Bambi lo pilló! (y lo soltó, claro)',
     'game.score': 'Atrapados',
-    'game.rabbit': 'Conejo. Arrástralo, o selecciónalo y usa las flechas.',
-    'game.treat': 'Chuche. Arrástrala hasta Bambi, o haz clic para dársela.',
+    'game.rabbit': 'Conejo. Arrástralo o selecciónalo y usa las flechas.',
+    'game.treat': 'Chuche. Arrástrala hasta Bambi o haz clic para dársela.',
     'game.treatPrompt': '¡Una chuche! Arrástrala hasta Bambi',
     'game.yum': '¡Ñam! ¡Gracias!',
     'game.treats': 'Chuches',

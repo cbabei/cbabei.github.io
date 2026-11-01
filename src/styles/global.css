@@ -69,6 +69,12 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+  /* The cross-page fade too. */
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
 }
 
 @theme inline {
@@ -256,4 +262,11 @@
 /* Smooth cross-page transitions (language switch, story page) without a JS router. */
 @view-transition {
   navigation: auto;
+}
+
+/* Without the Popover API (Safari before 17) the dropdowns would show open; Header.astro toggles .is-open instead. */
+@supports not selector(:popover-open) {
+  [popover]:not(.is-open) {
+    display: none;
+  }
 }

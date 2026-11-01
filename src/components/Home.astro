@@ -8,9 +8,6 @@ import Recommendations from './Recommendations.astro';
 import Beyond from './Beyond.astro';
 import { type Lang, useTranslations } from '../i18n/ui';
 import { profileSchema } from '../data/schema';
-import { getImage } from 'astro:assets';
-import photo from '../assets/portrait/cristian.png';
-import { site } from '../data/profile';
 
 interface Props {
   lang: Lang;
@@ -19,11 +16,9 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 const title = t('meta.title');
 const description = t('meta.description');
-const portrait = await getImage({ src: photo, width: 640, format: 'jpg', background: '#ffffff' });
-const portraitUrl = new URL(portrait.src, site.url).href;
 ---
 
-<Base lang={lang} page="" title={title} description={description} jsonLd={profileSchema(lang, '', title, description, portraitUrl)}>
+<Base lang={lang} page="" title={title} description={description} jsonLd={await profileSchema(lang, '', title, description)}>
   <Hero lang={lang} />
 
   <div class="container-page panels pt-8 pb-12 md:pt-12 md:pb-16">

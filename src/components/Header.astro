@@ -11,6 +11,8 @@ const { lang, page } = Astro.props;
 const t = useTranslations(lang);
 const home = localePath(lang);
 const langs = Object.keys(languages) as Lang[];
+// The 404 page has no translation, so its language links go to each home page.
+const langPage = page === '404' ? '' : page;
 const onHome = page === '';
 const anchor = (id: string) => (onHome ? `#${id}` : `${home}#${id}`);
 
@@ -99,7 +101,7 @@ const story = { href: localePath(lang, 'about'), label: t('nav.story'), current:
             langs.map((code) => (
               <li>
                 <a
-                  href={localePath(code, page)}
+                  href={localePath(code, langPage)}
                   hreflang={code}
                   lang={code}
                   aria-current={code === lang ? 'true' : undefined}
@@ -309,12 +311,25 @@ const story = { href: localePath(lang, 'about'), label: t('nav.story'), current:
 </style>
 
 <script>
+  // Browsers without the Popover API (Safari before 17) open and close the dropdowns with a class.
+  const nativePopover = 'popover' in HTMLElement.prototype;
+  if (!nativePopover) {
+    document.addEventListener('click', (e) => {
+      const btn = (e.target as Element).closest('[popovertarget]');
+      const target = btn && document.getElementById(btn.getAttribute('popovertarget')!);
+      document.querySelectorAll('[popover].is-open').forEach((m) => m !== target && m.classList.remove('is-open'));
+      target?.classList.toggle('is-open');
+    });
+  }
+
   // Following a link inside a dropdown should also close it; picking the language already shown just closes it.
   document.addEventListener('click', (e) => {
     const link = (e.target as Element).closest<HTMLAnchorElement>('#mobile-nav a, #lang-menu a');
     if (!link) return;
     if (link.closest('#lang-menu') && link.hasAttribute('aria-current')) e.preventDefault();
-    link.closest<HTMLElement>('[popover]')?.hidePopover();
+    const menu = link.closest<HTMLElement>('[popover]');
+    if (nativePopover) menu?.hidePopover();
+    else menu?.classList.remove('is-open');
   });
 
   // Open the language menu right under its button, wherever the header places it.

@@ -220,7 +220,7 @@ export const hobbies: Hobby[] = [
     title: { en: 'Gaming', es: 'Videojuegos' },
     text: {
       en: 'One of my oldest passions. I’ve always loved RPGs, strategy games, roguelikes and soulslikes such as Dark Souls.',
-      es: 'Una de mis pasiones más antiguas. Siempre me han encantado los juegos de rol, de estrategia, los roguelikes y los soulslike como Dark Souls.',
+      es: 'Una de mis pasiones más antiguas. Siempre me han encantado los juegos de rol, de estrategia, los roguelikes y los soulslikes como Dark Souls.',
     },
   },
   {

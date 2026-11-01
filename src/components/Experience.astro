@@ -364,6 +364,7 @@ function duration(start: string, end: string | null) {
   }
   .job-card {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: 0.5rem 1.5rem;
     padding: 1.25rem;
     border-radius: 1rem;
@@ -389,8 +390,9 @@ function duration(start: string, end: string | null) {
   /* Start ↓ duration ↓ end, centred in a narrow column (one line on phones). */
   .job-dates {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.25rem 0.5rem;
     font-family: var(--font-mono);
     font-size: 0.72rem;
     line-height: 1.4;
@@ -441,7 +443,8 @@ function duration(start: string, end: string | null) {
     font-size: 0.7rem;
     letter-spacing: 0;
     text-transform: none;
-    opacity: 0.75;
+    /* Quieter only at night; by day the muted colour is already as light as contrast allows. */
+    opacity: calc(1 - var(--p) * 0.25);
   }
   @media (min-width: 640px) {
     .job-dates {
