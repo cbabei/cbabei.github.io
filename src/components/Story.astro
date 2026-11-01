@@ -16,34 +16,56 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 const title = t('meta.story.title');
 const description = t('meta.story.description');
-const { Content } = lang === 'es' ? es : en;
+const story = lang === 'es' ? es : en;
+const { Content } = story;
+// Section index, read from the rendered story so the raw-HTML heading (#strengths) is included too.
+const sections = [...(await story.compiledContent()).matchAll(/<h2 id="([^"]+)">(.*?)<\/h2>/g)].map(([, id, text]) => ({
+  id,
+  text,
+}));
 ---
 
 <Base lang={lang} page="about" title={title} description={description} jsonLd={await profileSchema(lang, 'about', title, description)}>
   <article class="container-page story">
-    <a href={localePath(lang)} class="link-arrow back">
-      <Icon name="arrow-left" size={16} />
-      {t('story.back')}
-    </a>
+    <div class="story-intro">
+      <a href={localePath(lang)} class="link-arrow back">
+        <Icon name="arrow-left" size={16} />
+        {t('story.back')}
+      </a>
 
-    <header class="story-head">
-      <Picture
-        src={photo}
-        alt=""
-        formats={['avif', 'webp']}
-        fallbackFormat="webp"
-        widths={[112, 224]}
-        sizes="112px"
-        loading="eager"
-        fetchpriority="high"
-        class="story-avatar"
-      />
-      <div>
-        <p class="eyebrow">{site.name}</p>
-        <h1 class="story-title">{t('nav.story')}</h1>
-        <p class="mt-3 text-muted">{description}</p>
-      </div>
-    </header>
+      <header class="story-head">
+        <Picture
+          src={photo}
+          alt=""
+          formats={['avif', 'webp']}
+          fallbackFormat="webp"
+          widths={[112, 224]}
+          sizes="112px"
+          loading="eager"
+          fetchpriority="high"
+          class="story-avatar"
+        />
+        <div>
+          <p class="eyebrow">{site.name}</p>
+          <h1 class="story-title">{t('nav.story')}</h1>
+          <p class="mt-3 text-muted">{description}</p>
+        </div>
+      </header>
+    </div>
+
+    {/* Section index: a sticky column on wide screens that follows the reading position, a compact list on phones. */}
+    <nav class="toc" aria-labelledby="toc-title" data-toc>
+      <p id="toc-title" class="toc-title">{t('story.toc')}</p>
+      <ol>
+        {
+          sections.map((s) => (
+            <li>
+              <a href={`#${s.id}`}>{s.text}</a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
 
     <div class="prose-story">
       <Content />
@@ -56,6 +78,111 @@ const { Content } = lang === 'es' ? es : en;
     max-width: 46rem;
     padding-top: 3rem;
     padding-bottom: 2rem;
+  }
+  /* Wide screens: the index gets its own column to the left of the text. */
+  @media (min-width: 1100px) {
+    .story {
+      max-width: 72rem;
+      display: grid;
+      grid-template-columns: 13rem minmax(0, 46rem);
+      justify-content: center;
+      column-gap: 3.5rem;
+    }
+    .story-intro {
+      grid-column: 2;
+    }
+    .toc {
+      grid-column: 1;
+      grid-row: 2;
+      align-self: start;
+      position: sticky;
+      top: 6rem;
+      margin-top: 3.5rem;
+    }
+    .prose-story {
+      grid-column: 2;
+      grid-row: 2;
+    }
+  }
+
+  .toc {
+    margin-top: 2.5rem;
+    font-size: 0.875rem;
+  }
+  .toc-title {
+    margin-bottom: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .toc ol {
+    border-left: 1px solid var(--line);
+  }
+  .toc a {
+    position: relative;
+    display: block;
+    padding: 0.35rem 0 0.35rem 1rem;
+    line-height: 1.35;
+    text-decoration: none;
+    color: var(--muted);
+    transition: color 0.2s;
+  }
+  /* The section being read: brighter text and an accent mark over the line. */
+  .toc a::before {
+    content: '';
+    position: absolute;
+    left: -1px;
+    top: 0.3rem;
+    bottom: 0.3rem;
+    width: 2px;
+    border-radius: 2px;
+    background: var(--accent);
+    scale: 1 0;
+    transition: scale 0.25s;
+  }
+  .toc a:hover,
+  .toc a[aria-current] {
+    color: var(--fg);
+  }
+  .toc a[aria-current] {
+    font-weight: 600;
+  }
+  .toc a[aria-current]::before {
+    scale: 1 1;
+  }
+  /* Phones and tablets: a compact two-column list under the header, to jump straight to a section. */
+  @media (max-width: 1099px) {
+    .toc {
+      padding: 1rem 1.25rem;
+      border: 1px solid var(--line);
+      border-radius: 1rem;
+      background: var(--surface);
+    }
+    .toc ol {
+      border-left: 0;
+      columns: 2 11rem;
+      column-gap: 1.5rem;
+    }
+    .toc a {
+      padding: 0.3rem 0;
+    }
+    .toc li {
+      break-inside: avoid;
+    }
+    /* Here the list stays at the top, so marking the current section would only ever show the first one. */
+    .toc a[aria-current] {
+      font-weight: inherit;
+      color: var(--muted);
+    }
+    .toc a:hover {
+      color: var(--fg);
+    }
+    .toc a::before {
+      display: none;
+    }
   }
   .back :global(svg) {
     transition: transform 0.25s;
@@ -162,3 +289,45 @@ const { Content } = lang === 'es' ? es : en;
     color: #fdba74;
   }
 </style>
+
+<script>
+  // Highlight in the index the section being read: the last heading above the top third of the screen,
+  // or the last one once the page reaches the end. Checked once per frame while scrolling, when the
+  // layout is already up to date, and first from an IntersectionObserver so loading doesn't force a layout.
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-toc] a')];
+  const headings = links.map((a) => document.getElementById(decodeURIComponent(a.hash.slice(1))));
+
+  if (links.length && headings.every(Boolean)) {
+    let current = -1;
+    const update = () => {
+      const line = innerHeight / 3;
+      let i = 0;
+      headings.forEach((h, n) => {
+        if (h!.getBoundingClientRect().top <= line) i = n;
+      });
+      if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) i = headings.length - 1;
+      if (i === current) return;
+      current = i;
+      links.forEach((a, n) => (n === i ? a.setAttribute('aria-current', 'location') : a.removeAttribute('aria-current')));
+    };
+
+    let queued = false;
+    addEventListener(
+      'scroll',
+      () => {
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(() => {
+          queued = false;
+          update();
+        });
+      },
+      { passive: true },
+    );
+    const first = new IntersectionObserver(() => {
+      first.disconnect();
+      update();
+    });
+    first.observe(headings[0]!);
+  }
+</script>
