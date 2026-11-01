@@ -12,7 +12,7 @@ In 2015 I joined Capgemini in Langreo as an ABAP consultant: maintenance, incide
 
 ## Discovering Fiori
 
-At Capgemini I also met José Antonio, one of my best friends, who has been by my side ever since, always personally and often professionally too. He handled the Fiori developments, something I didn’t know and that, coming from web development, hooked me straight away. I asked him for help and he sent me material in his spare time. Since I couldn’t neglect my ABAP work, I learnt Fiori in my own free time.
+At Capgemini I also met Jose Antonio, one of my best friends, who has been by my side ever since, always personally and often professionally too. He handled the Fiori developments, something I didn’t know and that, coming from web development, hooked me straight away. I asked him for help and he sent me material in his spare time. Since I couldn’t neglect my ABAP work, I learnt Fiori in my own free time.
 
 In 2016 I got a call from Barcelona to join KPS as a Fiori developer with ABAP experience. I was upfront: I had very little Fiori experience and had learnt almost all of it on my own. They trusted me anyway. I packed my bags, moved to Barcelona and, for the first time, started living on my own.
 
@@ -36,7 +36,7 @@ That period gave me exactly what I was looking for: lots of different clients, o
 
 Along the way, much more important things happened than work: in 2017 I met Anamar, in 2020 we adopted Bambi, our Andalusian podenco, and in 2022 we got married.
 
-## Today
+## Where I am now
 
 At the end of 2025 I decided to go back to being an employee. After years as a freelancer, I wanted to grow inside a company again: take on roles with more leadership, lead a team, work side by side with others and grow with the company.
 
@@ -44,24 +44,7 @@ That is how my time at Zoi began. I’m making the most of everything a company 
 
 And the leadership I was looking for has arrived: since November 2026 I’m one of the company’s “leads”. It’s a role that goes beyond the technical side: supporting colleagues through coaching and mentoring so their path in the company is as smooth as possible, and helping them grow both professionally and personally. Being trusted with something like this is one of the things that has excited me most.
 
-<h2 id="strengths">How I work</h2>
-
-With the new lead role, I was asked to take Gallup’s CliftonStrengths assessment. I’m not one to take these tests literally, but I found it really interesting how well it matches the way I work and think. These are my top ten themes, in my own words:
-
-1. **Achiever.** I need to feel I’m making progress. I enjoy getting things done, and finishing a project gives me energy for the next one.
-2. **Ideation.** I love ideas and connecting things that seem unrelated at first. A good brainstorming session is one of my favourite parts of the job.
-3. **Strategic.** Faced with a problem, I quickly see several paths and pick the one that works best. That’s why I almost always have a plan B (and a C).
-4. **Learner.** Learning motivates me as much as the result. That’s how I learned Fiori in my free time, and how I keep going with AI today.
-5. **Analytical.** I want to understand the why behind things. Before I build, I like to be clear on every piece and how they fit together.
-6. **Individualization.** I notice what makes each person unique: what they’re good at, what motivates them and how they work best. It’s exactly what helps me most as a lead.
-7. **Responsibility.** If I commit to something, I see it through. Honesty and trust matter a lot to me.
-8. **Restorative.** I like finding what’s wrong and fixing it. A tricky issue hooks me more than it stresses me.
-9. **Deliberative.** I take decisions seriously. Before I jump in, I think about the risks and what could go wrong.
-10. **Arranger.** I enjoy organising people and resources so everything fits, and I adapt when something changes along the way.
-
-The report also points out things to watch, and I recognise some of them. With that Achiever side, I sometimes find it hard to say no to more work, so I try to prioritise better and not commit before I know everything it involves. And because I think in strategies quickly, I sometimes reach a conclusion without explaining how I got there; now I try to share my reasoning better, especially with people who are just starting out.
-
-## What’s next
+## My next steps
 
 I’ve been in the SAP world for more than ten years and, even so, I’m very aware of how much I still have to learn: new technologies, methodologies, good practices and ways of working. And above all, the functional side: modules like MM, SD or FI, or the retail world, which I’ve worked with for years but never really gone deep into.
 

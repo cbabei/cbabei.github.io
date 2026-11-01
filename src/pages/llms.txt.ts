@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 import { formatMonth, localePath } from '../i18n/ui';
 import { profile, site, skillGroups } from '../data/profile';
 import { education, jobs } from '../data/experience';
-import { certifications } from '../data/extras';
+import { certifications, strengths } from '../data/extras';
 
 // /llms.txt (llmstxt.org): a plain summary for AI assistants, built from the same data as the site.
 export const GET: APIRoute = () => {
@@ -43,6 +43,12 @@ ${jobs
 ## Certifications
 
 ${certifications.map((c) => `- [${c.name}](${c.credly}) (${c.year})`).join('\n')}
+
+## Strengths
+
+Top 10 themes from Gallup's CliftonStrengths assessment, in his own words:
+
+${strengths.map((s) => `- ${s.name.en}: ${s.text.en}`).join('\n')}
 
 ## Education
 

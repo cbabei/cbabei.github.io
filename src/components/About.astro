@@ -27,12 +27,6 @@ const t = useTranslations(lang);
             <span>
               <strong>{p.title[lang]}</strong>
               <span class="block text-sm text-muted">{p.text[lang]}</span>
-              {'more' in p && (
-                <a href={`${localePath(lang, 'about')}#${p.more}`} class="pillar-more">
-                  {t('about.strengthsMore')}
-                  <Icon name="arrow-right" size={13} />
-                </a>
-              )}
             </span>
           </li>
         ))
@@ -92,20 +86,6 @@ const t = useTranslations(lang);
     border-radius: 0.7rem;
     color: var(--accent);
     background: var(--accent-soft);
-  }
-  .pillar-more {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    margin-top: 0.15rem;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--accent);
-    text-decoration: none;
-  }
-  .pillar-more:hover {
-    text-decoration: underline;
-    text-underline-offset: 3px;
   }
 </style>
 

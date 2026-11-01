@@ -118,16 +118,6 @@ export const recommendations: Recommendation[] = [
     year: 2022,
   },
   {
-    original: 'es',
-    quote: {
-      es: 'Cristian es un profesional con empuje y altísima capacidad técnica. Su velocidad y agilidad de aprendizaje de nuevas tecnologías es impresionante. Con rapidez, se convierte en una pieza clave en cualquier equipo técnico llegando a ser un full-stack omnipresente e indispensable.',
-      en: 'Cristian is a driven professional with outstanding technical ability. The speed and agility with which he learns new technologies is impressive. He quickly becomes a key piece of any technical team, an omnipresent and indispensable full-stack developer.',
-    },
-    role: { es: 'Partner en KPS', en: 'Partner at KPS' },
-    relation: { es: 'Su responsable directo', en: 'Managed Cristian directly' },
-    year: 2022,
-  },
-  {
     original: 'en',
     quote: {
       en: '[…] He is a great coworker with solid problem solving and good quality in UI5 and ABAP development. He covers complex business requirements in a simple and understandable way.',
@@ -140,30 +130,10 @@ export const recommendations: Recommendation[] = [
   {
     original: 'es',
     quote: {
-      es: 'El mejor maestro que se puede tener. Gran profesional y gran compañero. Gracias a Cristian he crecido mucho a nivel profesional, ya que me ha brindado muchos conocimientos sobre SAPUI5 y SAP Fiori.',
-      en: 'The best teacher you could have. A great professional and a great colleague. Thanks to Cristian I have grown a lot professionally; he shared a great deal of knowledge about SAPUI5 and SAP Fiori with me.',
+      es: 'Cristian es un profesional con empuje y altísima capacidad técnica. Su velocidad y agilidad de aprendizaje de nuevas tecnologías es impresionante. Con rapidez, se convierte en una pieza clave en cualquier equipo técnico llegando a ser un full-stack omnipresente e indispensable.',
+      en: 'Cristian is a driven professional with outstanding technical ability. The speed and agility with which he learns new technologies is impressive. He quickly becomes a key piece of any technical team, an omnipresent and indispensable full-stack developer.',
     },
-    role: { es: 'Tech Lead Fiori', en: 'Fiori Tech Lead' },
-    relation: { es: 'Formado por Cristian', en: 'Mentored by Cristian' },
-    year: 2021,
-  },
-  {
-    original: 'en',
-    quote: {
-      en: '[…] His passion to work extensively and ability to connect and collaborate to deliver the best results distinguishes him from the rest. A great asset for any organisation.',
-      es: '[…] Su pasión por el trabajo y su capacidad para conectar y colaborar para lograr los mejores resultados le distinguen del resto. Un gran activo para cualquier organización.',
-    },
-    role: { en: 'Senior SAP BTP & Basis Consultant', es: 'Consultor sénior SAP BTP y Basis' },
-    relation: { en: 'Senior colleague', es: 'Compañero sénior' },
-    year: 2022,
-  },
-  {
-    original: 'es',
-    quote: {
-      es: 'Coincidí con él al comienzo de su carrera, que podría definir como meteórica, ya que desde un inicio demostró ser una persona implicada y despuntó rápidamente por su excelente capacidad para adaptarse a cualquier nuevo reto y llevarlo a buen puerto. […] Cualquiera con la posibilidad de tenerlo en su equipo tendría suerte, pues Cristian nunca defrauda.',
-      en: 'I worked with him at the start of a career I would call meteoric: from the very beginning he showed real commitment and quickly stood out for his excellent ability to adapt to any new challenge and see it through. […] Anyone who gets the chance to have him on their team would be lucky, because Cristian never disappoints.',
-    },
-    role: { es: 'SAP Project Manager', en: 'SAP Project Manager' },
+    role: { es: 'Partner en KPS', en: 'Partner at KPS' },
     relation: { es: 'Su responsable directo', en: 'Managed Cristian directly' },
     year: 2022,
   },
@@ -211,8 +181,8 @@ export const hobbies: Hobby[] = [
     icon: 'padel',
     title: { en: 'Padel', es: 'Pádel' },
     text: {
-      en: 'At least one match a week, with friends or meeting new people.',
-      es: 'Mínimo un partido por semana, con amigos o conociendo gente nueva.',
+      en: 'I try to play at least one match a week, with friends or meeting new people.',
+      es: 'Intento jugar mínimo un partido por semana, con amigos o conociendo gente nueva.',
     },
   },
   {
@@ -229,6 +199,108 @@ export const hobbies: Hobby[] = [
     text: {
       en: 'Classic books of adventure, fantasy and mystery. And Asian comics too, like manga and manhua.',
       es: 'Libros de los de toda la vida, de aventuras, fantasía y misterio. Y también cómic asiático, como el manga o el manhua.',
+    },
+  },
+];
+
+export interface Strength {
+  icon: 'rocket' | 'lightbulb' | 'route' | 'graduation' | 'search' | 'user' | 'shield' | 'wrench' | 'scale' | 'grid';
+  /** CliftonStrengths domain: picks the colour of the card. */
+  domain: 'executing' | 'strategic' | 'relationship';
+  name: L10n;
+  text: L10n;
+}
+
+// Top 10 of Gallup's CliftonStrengths assessment, in his own words (names as Gallup gives them in each language).
+export const strengths: Strength[] = [
+  {
+    icon: 'rocket',
+    domain: 'executing',
+    name: { en: 'Achiever', es: 'Emprendedor' },
+    text: {
+      en: 'I need to feel I’m making progress. I enjoy getting things done, and finishing a project gives me energy for the next one.',
+      es: 'Necesito sentir que avanzo. Disfruto cerrando tareas, y terminar un proyecto me da energía para el siguiente.',
+    },
+  },
+  {
+    icon: 'lightbulb',
+    domain: 'strategic',
+    name: { en: 'Ideation', es: 'Idear' },
+    text: {
+      en: 'I love ideas and connecting things that seem unrelated at first. A good brainstorming session is one of my favourite parts of the job.',
+      es: 'Me encantan las ideas y conectar cosas que a primera vista no tienen relación. Una buena lluvia de ideas es de mis partes favoritas del trabajo.',
+    },
+  },
+  {
+    icon: 'route',
+    domain: 'strategic',
+    name: { en: 'Strategic', es: 'Estratégico' },
+    text: {
+      en: 'Faced with a problem, I quickly see several paths and pick the one that works best. That’s why I almost always have a plan B (and a C).',
+      es: 'Ante un problema veo enseguida varios caminos y me quedo con el que mejor funciona. Por eso casi siempre tengo un plan B (y un C).',
+    },
+  },
+  {
+    icon: 'graduation',
+    domain: 'strategic',
+    name: { en: 'Learner', es: 'Estudioso' },
+    text: {
+      en: 'Learning motivates me as much as the result. That’s how I learned Fiori in my free time, and how I keep going with AI today.',
+      es: 'Aprender me motiva tanto como el resultado. Así aprendí Fiori en mi tiempo libre, y así sigo hoy con la IA.',
+    },
+  },
+  {
+    icon: 'search',
+    domain: 'strategic',
+    name: { en: 'Analytical', es: 'Analítico' },
+    text: {
+      en: 'I want to understand the why behind things. Before I build, I like to be clear on every piece and how they fit together.',
+      es: 'Quiero entender el porqué de las cosas. Antes de construir, me gusta tener claras todas las piezas y cómo encajan.',
+    },
+  },
+  {
+    icon: 'user',
+    domain: 'relationship',
+    name: { en: 'Individualization', es: 'Individualizar' },
+    text: {
+      en: 'I notice what makes each person unique: what they’re good at, what motivates them and how they work best. It’s exactly what helps me most as a lead.',
+      es: 'Me fijo en lo que hace única a cada persona: qué se le da bien, qué le motiva y cómo trabaja mejor. Es justo lo que más me ayuda como lead.',
+    },
+  },
+  {
+    icon: 'shield',
+    domain: 'executing',
+    name: { en: 'Responsibility', es: 'Responsabilidad' },
+    text: {
+      en: 'If I commit to something, I see it through. Honesty and trust matter a lot to me.',
+      es: 'Si me comprometo con algo, lo saco adelante. La honestidad y la confianza son muy importantes para mí.',
+    },
+  },
+  {
+    icon: 'wrench',
+    domain: 'executing',
+    name: { en: 'Restorative', es: 'Restaurador' },
+    text: {
+      en: 'I like finding what’s wrong and fixing it. A tricky issue hooks me more than it stresses me.',
+      es: 'Me gusta encontrar qué falla y arreglarlo. Una incidencia complicada me engancha más de lo que me agobia.',
+    },
+  },
+  {
+    icon: 'scale',
+    domain: 'executing',
+    name: { en: 'Deliberative', es: 'Prudente' },
+    text: {
+      en: 'I take decisions seriously. Before I jump in, I think about the risks and what could go wrong.',
+      es: 'Me tomo las decisiones en serio. Antes de lanzarme, pienso en los riesgos y en lo que puede salir mal.',
+    },
+  },
+  {
+    icon: 'grid',
+    domain: 'executing',
+    name: { en: 'Arranger', es: 'Organizador' },
+    text: {
+      en: 'I enjoy organising people and resources so everything fits, and I adapt when something changes along the way.',
+      es: 'Disfruto organizando personas y recursos para que todo encaje, y me adapto cuando algo cambia por el camino.',
     },
   },
 ];

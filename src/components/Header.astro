@@ -22,6 +22,7 @@ const sections = [
   { href: anchor('experience'), label: t('nav.experience') },
   { href: anchor('certifications'), label: t('nav.certifications') },
   { href: anchor('recommendations'), label: t('nav.recommendations') },
+  { href: anchor('strengths'), label: t('nav.strengths') },
   { href: anchor('beyond'), label: t('nav.beyond') },
 ];
 const story = { href: localePath(lang, 'about'), label: t('nav.story'), current: page === 'about' };
@@ -33,7 +34,7 @@ const story = { href: localePath(lang, 'about'), label: t('nav.story'), current:
       <span aria-hidden="true">CB</span>
     </a>
 
-    <nav aria-label={t('nav.primary')} class="hidden lg:block">
+    <nav aria-label={t('nav.primary')} class="hidden xl:block">
       <ul class="flex items-center gap-6 text-sm font-medium">
         {
           sections.map((l) => (
@@ -199,7 +200,7 @@ const story = { href: localePath(lang, 'about'), label: t('nav.story'), current:
     background: color-mix(in oklab, var(--muted) 55%, transparent);
   }
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1280px) {
     .icon-btn.menu-btn,
     .mobile-nav {
       display: none;

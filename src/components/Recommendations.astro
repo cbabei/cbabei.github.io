@@ -64,11 +64,11 @@ const translated = (r: Recommendation) => r.original !== lang;
 </section>
 
 <style>
+  /* The quote that sums him up: centred, with who said it aligned to the right under it. */
   .featured {
-    margin-top: 0.35rem;
-  }
-  .featured blockquote {
     max-width: 52rem;
+    margin: 0.35rem auto 0;
+    text-align: center;
   }
   .featured-intro {
     margin-bottom: 1rem;
@@ -86,6 +86,7 @@ const translated = (r: Recommendation) => r.original !== lang;
   }
   .featured figcaption {
     margin-top: 1rem;
+    text-align: right;
     font-family: var(--font-mono);
     font-size: 0.75rem;
     letter-spacing: 0.06em;

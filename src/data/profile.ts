@@ -41,12 +41,12 @@ export const profile = {
   ],
   about: {
     en: [
-      'For me, development is not just about writing code that works. I truly care about the final product: every application should be clean, reliable and easy to use.',
-      'My strength is seeing the whole picture. On the frontend, caring for the interface and the user experience; on the backend, building a clean, object-oriented architecture that is secure and performs well; and in between, connecting it all through well-designed APIs and services. Understanding how each layer fits together is what lets me make good decisions and find the best solution for every problem.',
+      'I’ve never defined myself as a “programmer”, but as a problem solver. My goal is to find the best, most efficient way to give users the best possible product: clean, reliable and easy to use.',
+      'In the SAP world, my biggest strength is seeing the whole picture: a careful interface and user experience on the frontend, a clean, secure and efficient backend, and well-designed APIs and services connecting the two. Understanding how every layer fits together is what lets me make the right call on each problem.',
     ],
     es: [
-      'Para mí, desarrollar no es solo escribir código que funcione. Me importa de verdad el producto final: cada aplicación debe ser limpia, fiable y fácil de usar.',
-      'Mi fuerte es ver el conjunto. En el front, cuidar la interfaz y la experiencia de usuario; en el back, montar una arquitectura ordenada, orientada a objetos, segura y con buen rendimiento; y entre medias, conectarlo todo con APIs y servicios bien pensados. Entender cómo encaja cada capa es lo que me permite tomar buenas decisiones y encontrar la mejor solución para cada problema.',
+      'Nunca me he definido como «programador», sino como alguien que resuelve problemas. Mi objetivo es encontrar la forma más óptima de que el usuario tenga el mejor producto: limpio, fiable y fácil de usar.',
+      'En el mundo SAP, mi mayor fortaleza es ver el conjunto: una interfaz y una experiencia de usuario cuidadas en el front, un back ordenado, seguro y eficiente, y APIs y servicios bien pensados que lo conectan todo. Entender cómo encaja cada capa es lo que me permite acertar con cada problema.',
     ],
   } satisfies L10n<string[]>,
   pillars: [
@@ -67,16 +67,6 @@ export const profile = {
         en: 'SAP BAIP, Joule, integrations, low-code and pro-code… and whatever comes next.',
         es: 'SAP BAIP, Joule, integraciones, low-code y pro-code… y lo que venga.',
       },
-    },
-    {
-      icon: 'target',
-      title: { en: 'CliftonStrengths', es: 'CliftonStrengths' },
-      text: {
-        en: 'Achiever · Ideation · Strategic · Learner · Analytical',
-        es: 'Emprendedor · Idear · Estratégico · Estudioso · Analítico',
-      },
-      // Top 5 from Gallup's assessment; the story explains the top 10.
-      more: 'strengths',
     },
   ],
 } as const;

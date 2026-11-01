@@ -5,6 +5,7 @@ import About from './About.astro';
 import Experience from './Experience.astro';
 import Certifications from './Certifications.astro';
 import Recommendations from './Recommendations.astro';
+import Strengths from './Strengths.astro';
 import Beyond from './Beyond.astro';
 import { type Lang, useTranslations } from '../i18n/ui';
 import { profileSchema } from '../data/schema';
@@ -30,6 +31,8 @@ const description = t('meta.description');
   <Certifications lang={lang} />
   <div class="container-page"><hr class="section-divider" /></div>
   <Recommendations lang={lang} />
+  <div class="container-page"><hr class="section-divider" /></div>
+  <Strengths lang={lang} />
   <div class="container-page"><hr class="section-divider" /></div>
   <Beyond lang={lang} />
 </Base>

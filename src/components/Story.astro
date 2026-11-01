@@ -18,11 +18,11 @@ const title = t('meta.story.title');
 const description = t('meta.story.description');
 const story = lang === 'es' ? es : en;
 const { Content } = story;
-// Section index, read from the rendered story so the raw-HTML heading (#strengths) is included too.
-const sections = [...(await story.compiledContent()).matchAll(/<h2 id="([^"]+)">(.*?)<\/h2>/g)].map(([, id, text]) => ({
-  id,
-  text,
-}));
+// Section index: the story's own headings.
+const sections = story
+  .getHeadings()
+  .filter((h) => h.depth === 2)
+  .map((h) => ({ id: h.slug, text: h.text }));
 ---
 
 <Base lang={lang} page="about" title={title} description={description} jsonLd={await profileSchema(lang, 'about', title, description)}>
