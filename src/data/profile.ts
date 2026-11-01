@@ -36,17 +36,17 @@ export const profile = {
   } satisfies L10n,
   stats: [
     { value: `${yearsInSap}+`, label: { en: 'years in SAP', es: 'años en SAP' } },
-    { value: String(certifications.length), label: { en: 'SAP certifications', es: 'certificaciones SAP' } },
+    { value: String(certifications.length), label: { en: 'certifications', es: 'certificaciones' } },
     { value: 'E2E', label: { en: 'from design to go-live', es: 'del diseño al go-live' } },
   ],
   about: {
     en: [
-      'For years now I haven’t seen myself as just a “programmer”, but as a problem solver. My goal is to find the best, most efficient way to give users the best possible product: clean, reliable and easy to use.',
-      'In the SAP world, my biggest strength is seeing the whole picture: a careful interface and user experience on the frontend, a clean, secure and efficient backend, and well-designed APIs and services connecting the two. Understanding how every layer fits together is what lets me make the right call on each problem.',
+      'For years now I haven’t seen myself as just a “programmer”, but as a problem solver. My goal is to find the best way to build something of real quality that gives users the best possible experience.',
+      'In the SAP world, my biggest strength is seeing the whole picture: a careful interface and user experience on the frontend, a clean, high-performing backend, and secure, well-designed APIs and services. Understanding how every layer fits together is what lets me make the right call on each problem.',
     ],
     es: [
-      'Hace años que ya no me veo solo como un «programador», sino como alguien que resuelve problemas. Mi objetivo es encontrar la forma más óptima de que el usuario tenga el mejor producto: limpio, fiable y fácil de usar.',
-      'En el mundo SAP, mi mayor fortaleza es ver el conjunto: una interfaz y una experiencia de usuario cuidadas en el front, un back ordenado, seguro y eficiente, y APIs y servicios bien pensados que lo conectan todo. Entender cómo encaja cada capa es lo que me permite acertar con cada problema.',
+      'Hace años que ya no me veo solo como un «programador», sino como alguien que resuelve problemas. Mi objetivo es encontrar la forma óptima de construir algo de calidad que le dé al usuario la mejor experiencia posible.',
+      'En el mundo SAP, mi mayor fortaleza es ver el conjunto: una interfaz y una experiencia de usuario cuidadas en el front, un back ordenado y con buen rendimiento, y APIs y servicios seguros y bien pensados. Entender cómo encaja cada capa es lo que me permite acertar con cada problema.',
     ],
   } satisfies L10n<string[]>,
   pillars: [
@@ -74,7 +74,7 @@ export const profile = {
 export const skillGroups: { title: L10n; items: string[] }[] = [
   { title: { en: 'Frontend', es: 'Frontend' }, items: ['SAPUI5', 'Fiori Elements', 'Fiori Launchpad', 'SAP Work Zone', 'JavaScript'] },
   { title: { en: 'Backend', es: 'Backend' }, items: ['ABAP OO', 'RAP', 'CDS', 'OData', 'SAP HANA'] },
-  { title: { en: 'Cloud', es: 'Cloud' }, items: ['SAP BTP', 'S/4HANA', 'SAP Build'] },
+  { title: { en: 'Cloud', es: 'Cloud' }, items: ['SAP BAIP', 'S/4HANA', 'SAP Build', 'Integration Suite'] },
   { title: { en: 'AI', es: 'IA' }, items: ['SAP Business AI', 'Joule Studio', 'AI Agents', 'MCP', 'AI-assisted development'] },
-  { title: { en: 'Approach', es: 'Enfoque' }, items: ['Design Thinking', 'UX Design', 'Agile & Waterfall', 'Tech Lead', 'Solution Architecture'] },
+  { title: { en: 'Approach', es: 'Enfoque' }, items: ['Design Thinking', 'UX Design', 'Tech Lead', 'Agile & Waterfall', 'Solution Architecture'] },
 ];

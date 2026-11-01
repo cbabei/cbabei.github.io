@@ -29,7 +29,10 @@ grass += 'V60z';
 <footer id="contact" class="site-footer" aria-labelledby="contact-title">
   <div class="container-page relative z-10 pt-14 text-center md:pt-16">
     <h2 id="contact-title" class="section-title reveal">{t('contact.title')}</h2>
-    <p class="mx-auto mt-3 max-w-md text-muted reveal">{t('contact.lead')}</p>
+    {/* One sentence per line, so "LinkedIn: write to me" isn't split in two on wide screens. */}
+    <p class="mx-auto mt-3 max-w-2xl text-muted reveal">
+      {t('contact.lead').split(/(?<=\.) /).map((s) => <span class="block">{s}</span>)}
+    </p>
     <div class="mt-8 flex flex-wrap justify-center gap-3 reveal">
       <a class="btn btn-primary" href={site.linkedin} rel="me noopener" target="_blank">
         <Icon name="linkedin" size={17} />

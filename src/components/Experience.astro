@@ -50,7 +50,6 @@ function duration(start: string, end: string | null) {
 
 <section id="experience" aria-labelledby="exp-title" class="experience">
   <h2 id="exp-title" class="section-title">{t('exp.title')}</h2>
-  <p class="mt-3 text-muted">{t('exp.lead')}</p>
 
   <figure class="career-map card">
     <figcaption class="map-caption">
@@ -90,9 +89,13 @@ function duration(start: string, end: string | null) {
 
   {/* Each role is a collapsible panel; only the current one starts open. */}
   <div class="jobs-bar">
-    <button type="button" class="jobs-toggle" data-jobs-toggle data-expand={t('exp.expandAll')} data-collapse={t('exp.collapseAll')} aria-controls="job-list">
+    <button type="button" class="jobs-toggle" data-jobs="open" aria-controls="job-list">
       <Icon name="chevron-down" size={15} />
-      <span>{t('exp.expandAll')}</span>
+      {t('exp.expandAll')}
+    </button>
+    <button type="button" class="jobs-toggle jobs-toggle--close" data-jobs="close" aria-controls="job-list">
+      <Icon name="chevron-down" size={15} />
+      {t('exp.collapseAll')}
     </button>
   </div>
 
@@ -286,6 +289,7 @@ function duration(start: string, end: string | null) {
     margin-top: 1.5rem;
     display: flex;
     justify-content: flex-end;
+    gap: 0.5rem;
   }
   .jobs-toggle {
     display: inline-flex;
@@ -305,10 +309,7 @@ function duration(start: string, end: string | null) {
     color: var(--accent);
     border-color: var(--accent);
   }
-  .jobs-toggle :global(svg) {
-    transition: rotate 0.3s;
-  }
-  .jobs-toggle[data-state='collapse'] :global(svg) {
+  .jobs-toggle--close :global(svg) {
     rotate: 180deg;
   }
 
@@ -331,6 +332,9 @@ function duration(start: string, end: string | null) {
   }
   .job-card[open] {
     background: var(--surface);
+  }
+  .job-card[open] .job-head {
+    padding-bottom: 0.35rem;
   }
   .job-head {
     display: grid;

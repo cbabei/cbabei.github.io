@@ -118,13 +118,16 @@ const domains: Record<Strength['domain'], { from: string; to: string }> = {
     cursor: pointer;
     transition: transform 0.35s cubic-bezier(0.3, 0.7, 0.4, 1.4), border-color 0.3s;
   }
+  /* The name centred in the card; the number stays in the top-left corner. */
   .strength-top {
-    display: flex;
-    align-items: baseline;
-    gap: 0.6rem;
+    position: relative;
+    padding-inline: 1.1rem;
+    text-align: center;
   }
   .strength-num {
-    flex: none;
+    position: absolute;
+    left: 0;
+    top: 0.2rem;
     font-family: var(--font-mono);
     font-size: 0.75rem;
     font-weight: 600;
@@ -142,11 +145,11 @@ const domains: Record<Strength['domain'], { from: string; to: string }> = {
     box-shadow: 0 8px 16px -8px var(--to);
     transition: rotate 0.5s cubic-bezier(0.3, 0.7, 0.4, 1.6);
   }
+  /* Sized so the longest name ("Responsabilidad") fits on one line beside the number. */
   .strength-name {
-    font-size: 1.05rem;
+    font-size: clamp(0.82rem, 1.25vw, 1rem);
     font-weight: 700;
     line-height: 1.25;
-    overflow-wrap: anywhere;
   }
 
   /* The text: laid over the card, hidden until hover (mouse), tap (.is-open) or keyboard focus. */
@@ -224,7 +227,12 @@ const domains: Record<Strength['domain'], { from: string; to: string }> = {
       border-radius: 0.75rem;
     }
     .strength-num {
+      position: static;
       order: -2;
+    }
+    .strength-name {
+      font-size: 1rem;
+      text-align: left;
     }
     .strength-text {
       position: static;

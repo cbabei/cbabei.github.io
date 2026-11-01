@@ -49,6 +49,26 @@ export const jobs: Job[] = [
     tech: ['SAPUI5', 'ABAP OO', 'SAP BTP', 'SAP Build', 'GenAI', 'Tech Lead'],
   },
   {
+    id: 'ey-2019',
+    engagement: 'freelance',
+    company: 'EY',
+    role: seniorUI5,
+    start: '2019-10',
+    end: null,
+    location: barcelona,
+    highlights: {
+      en: [
+        'Fiori Lead across concurrent projects: technical direction, development standards and full lifecycle of SAPUI5, OData and ABAP OO solutions.',
+        'Technical central point during major S/4HANA upgrades, managing Fiori Launchpad and applying Design Thinking.',
+      ],
+      es: [
+        'Fiori Lead en varios proyectos a la vez: dirección técnica, estándares de desarrollo y ciclo completo de soluciones SAPUI5, OData y ABAP OO.',
+        'Punto técnico central en grandes upgrades de S/4HANA, gestionando el Fiori Launchpad y aplicando Design Thinking.',
+      ],
+    },
+    tech: ['SAPUI5', 'OData', 'ABAP OO', 'S/4HANA', 'Fiori Launchpad', 'Design Thinking', 'Tech Lead'],
+  },
+  {
     id: 'code10-2024',
     engagement: 'freelance',
     company: 'CODE10',
@@ -107,26 +127,6 @@ export const jobs: Job[] = [
       ],
     },
     tech: ['SAPUI5', 'RAP', 'CDS', 'OData', 'S/4HANA', 'SAP BTP', 'Design Thinking'],
-  },
-  {
-    id: 'ey-2019',
-    engagement: 'freelance',
-    company: 'EY',
-    role: seniorUI5,
-    start: '2019-10',
-    end: null,
-    location: barcelona,
-    highlights: {
-      en: [
-        'Fiori Lead across concurrent projects: technical direction, development standards and full lifecycle of SAPUI5, OData and ABAP OO solutions.',
-        'Technical central point during major S/4HANA upgrades, managing Fiori Launchpad and applying Design Thinking.',
-      ],
-      es: [
-        'Fiori Lead en varios proyectos a la vez: dirección técnica, estándares de desarrollo y ciclo completo de soluciones SAPUI5, OData y ABAP OO.',
-        'Punto técnico central en grandes upgrades de S/4HANA, gestionando el Fiori Launchpad y aplicando Design Thinking.',
-      ],
-    },
-    tech: ['SAPUI5', 'OData', 'ABAP OO', 'S/4HANA', 'Fiori Launchpad', 'Design Thinking', 'Tech Lead'],
   },
   {
     id: 'excelium-2019',

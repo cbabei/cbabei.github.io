@@ -2,22 +2,10 @@ const jobs = [...document.querySelectorAll<HTMLElement>('.job')];
 const bars = [...document.querySelectorAll<HTMLElement>('.bar')];
 const panels = [...document.querySelectorAll<HTMLDetailsElement>('.job-card')];
 
-// "Expand all" / "Collapse all": opens every role, or closes them all, and its label follows what's open.
-const toggle = document.querySelector<HTMLButtonElement>('[data-jobs-toggle]');
-const label = toggle?.querySelector('span');
-const syncToggle = () => {
-  if (!toggle || !label) return;
-  const allOpen = panels.every((p) => p.open);
-  toggle.dataset.state = allOpen ? 'collapse' : 'expand';
-  label.textContent = (allOpen ? toggle.dataset.collapse : toggle.dataset.expand) ?? '';
-};
-toggle?.addEventListener('click', () => {
-  const open = toggle.dataset.state !== 'collapse';
-  panels.forEach((p) => (p.open = open));
-  syncToggle();
-});
-panels.forEach((p) => p.addEventListener('toggle', syncToggle));
-syncToggle();
+// "Expand all" and "Collapse all".
+document.querySelectorAll<HTMLButtonElement>('[data-jobs]').forEach((btn) =>
+  btn.addEventListener('click', () => panels.forEach((p) => (p.open = btn.dataset.jobs === 'open'))),
+);
 
 // A bar in the career map opens its role in the list.
 for (const bar of bars) {
