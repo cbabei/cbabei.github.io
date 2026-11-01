@@ -38,13 +38,15 @@ const domains: Record<Strength['domain'], { from: string; to: string }> = {
         return (
           <li class="strength reveal" style={`--from:${c.from};--to:${c.to}`}>
             <button type="button" class="strength-face card" aria-expanded="false" aria-describedby={`strength-${i}`}>
-              <span class="strength-num" aria-hidden="true">
-                {String(i + 1).padStart(2, '0')}
+              <span class="strength-top">
+                <span class="strength-num" aria-hidden="true">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span class="strength-name">{s.name[lang]}</span>
               </span>
               <span class="strength-icon">
-                <Icon name={s.icon} size={22} />
+                <Icon name={s.icon} size={26} />
               </span>
-              <span class="strength-name">{s.name[lang]}</span>
             </button>
             <p id={`strength-${i}`} class="strength-text">
               <span class="strength-text-name" aria-hidden="true">
@@ -100,26 +102,29 @@ const domains: Record<Strength['domain'], { from: string; to: string }> = {
   .strength {
     position: relative;
   }
+  /* Number and name across the top, the icon centred in the space below. */
   .strength-face {
     position: relative;
     width: 100%;
-    min-height: 12.5rem;
+    min-height: 10.5rem;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 1.1rem;
+    align-items: stretch;
+    gap: 0.75rem;
+    padding: 1rem 1.1rem 1.1rem;
     text-align: left;
     font: inherit;
     color: inherit;
     cursor: pointer;
     transition: transform 0.35s cubic-bezier(0.3, 0.7, 0.4, 1.4), border-color 0.3s;
   }
+  .strength-top {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
   .strength-num {
-    position: absolute;
-    top: 0.9rem;
-    right: 1rem;
+    flex: none;
     font-family: var(--font-mono);
     font-size: 0.75rem;
     font-weight: 600;
@@ -128,9 +133,10 @@ const domains: Record<Strength['domain'], { from: string; to: string }> = {
   .strength-icon {
     display: grid;
     place-items: center;
-    width: 3rem;
-    height: 3rem;
-    border-radius: 0.9rem;
+    width: 3.75rem;
+    height: 3.75rem;
+    margin: auto;
+    border-radius: 1.1rem;
     color: #fff;
     background: linear-gradient(135deg, var(--from), var(--to));
     box-shadow: 0 8px 16px -8px var(--to);
@@ -146,17 +152,20 @@ const domains: Record<Strength['domain'], { from: string; to: string }> = {
   /* The text: laid over the card, hidden until hover (mouse), tap (.is-open) or keyboard focus. */
   .strength-text {
     position: absolute;
-    inset: 0;
+    /* At least the card's size; a longer text grows downwards over the next row, like a popover. */
+    inset: 0 0 auto;
+    min-height: 100%;
+    z-index: 2;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     padding: 1.1rem;
-    overflow: auto;
     border-radius: 1.25rem;
+    box-shadow: 0 18px 40px -18px var(--shadow);
     border: 1px solid var(--to);
     background: var(--surface-strong);
     color: var(--fg);
-    font-size: 0.85rem;
+    font-size: 0.84rem;
     line-height: 1.5;
     opacity: 0;
     translate: 0 0.5rem;
@@ -202,19 +211,24 @@ const domains: Record<Strength['domain'], { from: string; to: string }> = {
       gap: 0.9rem;
       padding: 0.75rem 1rem;
     }
-    .strength-num {
-      position: static;
-      order: 3;
-      margin-left: auto;
+    /* Row: number, icon, name. */
+    .strength-top {
+      display: contents;
     }
     .strength-icon {
+      order: -1;
       flex: none;
       width: 2.5rem;
       height: 2.5rem;
+      margin: 0;
       border-radius: 0.75rem;
+    }
+    .strength-num {
+      order: -2;
     }
     .strength-text {
       position: static;
+      min-height: 0;
       display: none;
       margin-top: 0.4rem;
       padding: 0.9rem 1rem;

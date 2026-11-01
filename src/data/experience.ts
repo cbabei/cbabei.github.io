@@ -1,9 +1,5 @@
 import type { L10n } from '../i18n/ui';
 
-/** What makes a role stand out. Used by the experience filters (labels live in ui.ts as focus.*). */
-export const focusAreas = ['lead', 'cloud', 's4', 'ux', 'innovation', 'intl'] as const;
-export type Focus = (typeof focusAreas)[number];
-
 export interface Job {
   id: string;
   company: string;
@@ -14,9 +10,8 @@ export interface Job {
   end: string | null;
   location: L10n;
   engagement: 'employee' | 'freelance';
-  focus: Focus[];
   highlights: L10n<string[]>;
-  /** Must match names used in skillGroups to make the skill chips filter this list. */
+  /** Shown as chips under each role. */
   tech: string[];
 }
 
@@ -35,7 +30,6 @@ export const jobs: Job[] = [
     end: null,
     location: barcelona,
     engagement: 'employee',
-    focus: ['lead', 'cloud', 'innovation', 'ux'],
     highlights: {
       en: [
         'Became a “Lead” in November 2026, a role that consists of supporting colleagues’ personal and professional growth through coaching and mentoring.',
@@ -57,7 +51,6 @@ export const jobs: Job[] = [
   {
     id: 'code10-2024',
     engagement: 'freelance',
-    focus: ['lead', 'cloud', 'ux'],
     company: 'CODE10',
     role: { en: 'UI5 & UX Expert', es: 'Experto UI5 y UX' },
     start: '2024-02',
@@ -78,7 +71,6 @@ export const jobs: Job[] = [
   {
     id: 'zoi-2023',
     engagement: 'freelance',
-    focus: ['lead', 'ux'],
     company: 'Zoi',
     role: { en: 'Fiori Senior Expert', es: 'Experto Senior Fiori' },
     start: '2023-04',
@@ -99,7 +91,6 @@ export const jobs: Job[] = [
   {
     id: 'kps-2020',
     engagement: 'freelance',
-    focus: ['cloud', 's4', 'ux'],
     company: 'KPS Iberia',
     role: seniorUI5,
     start: '2020-07',
@@ -120,7 +111,6 @@ export const jobs: Job[] = [
   {
     id: 'ey-2019',
     engagement: 'freelance',
-    focus: ['lead', 's4', 'ux'],
     company: 'EY',
     role: seniorUI5,
     start: '2019-10',
@@ -141,7 +131,6 @@ export const jobs: Job[] = [
   {
     id: 'excelium-2019',
     engagement: 'freelance',
-    focus: [],
     company: 'Excelium Consulting',
     role: seniorUI5,
     start: '2019-10',
@@ -156,7 +145,6 @@ export const jobs: Job[] = [
   {
     id: 'averlance-2018',
     engagement: 'freelance',
-    focus: ['intl', 'ux'],
     company: 'Averlance',
     role: seniorUI5,
     start: '2018-11',
@@ -177,7 +165,6 @@ export const jobs: Job[] = [
   {
     id: 'kps-2016',
     engagement: 'employee',
-    focus: ['innovation'],
     company: 'KPS Iberia',
     role: seniorUI5,
     start: '2016-11',
@@ -198,7 +185,6 @@ export const jobs: Job[] = [
   {
     id: 'capgemini-2015',
     engagement: 'employee',
-    focus: [],
     company: 'Capgemini',
     role: { en: 'ABAP Consultant', es: 'Consultor ABAP' },
     start: '2015-11',
@@ -213,7 +199,6 @@ export const jobs: Job[] = [
   {
     id: 'tst-2015',
     engagement: 'employee',
-    focus: [],
     company: 'TST Informática',
     role: { en: 'Web / Java Developer', es: 'Desarrollador Web / Java' },
     start: '2015-04',

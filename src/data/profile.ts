@@ -41,11 +41,11 @@ export const profile = {
   ],
   about: {
     en: [
-      'I’ve never defined myself as a “programmer”, but as a problem solver. My goal is to find the best, most efficient way to give users the best possible product: clean, reliable and easy to use.',
+      'For years now I haven’t seen myself as just a “programmer”, but as a problem solver. My goal is to find the best, most efficient way to give users the best possible product: clean, reliable and easy to use.',
       'In the SAP world, my biggest strength is seeing the whole picture: a careful interface and user experience on the frontend, a clean, secure and efficient backend, and well-designed APIs and services connecting the two. Understanding how every layer fits together is what lets me make the right call on each problem.',
     ],
     es: [
-      'Nunca me he definido como «programador», sino como alguien que resuelve problemas. Mi objetivo es encontrar la forma más óptima de que el usuario tenga el mejor producto: limpio, fiable y fácil de usar.',
+      'Hace años que ya no me veo solo como un «programador», sino como alguien que resuelve problemas. Mi objetivo es encontrar la forma más óptima de que el usuario tenga el mejor producto: limpio, fiable y fácil de usar.',
       'En el mundo SAP, mi mayor fortaleza es ver el conjunto: una interfaz y una experiencia de usuario cuidadas en el front, un back ordenado, seguro y eficiente, y APIs y servicios bien pensados que lo conectan todo. Entender cómo encaja cada capa es lo que me permite acertar con cada problema.',
     ],
   } satisfies L10n<string[]>,

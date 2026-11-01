@@ -1,42 +1,29 @@
-const calm = matchMedia('(prefers-reduced-motion: reduce)');
 const jobs = [...document.querySelectorAll<HTMLElement>('.job')];
 const bars = [...document.querySelectorAll<HTMLElement>('.bar')];
-const buttons = [...document.querySelectorAll<HTMLButtonElement>('button[data-group]')];
-const status = document.querySelector<HTMLElement>('.showing');
+const panels = [...document.querySelectorAll<HTMLDetailsElement>('.job-card')];
 
-type Group = 'type' | 'focus';
-const state: Record<Group, string> = { type: '', focus: '' };
+// "Expand all" / "Collapse all": opens every role, or closes them all, and its label follows what's open.
+const toggle = document.querySelector<HTMLButtonElement>('[data-jobs-toggle]');
+const label = toggle?.querySelector('span');
+const syncToggle = () => {
+  if (!toggle || !label) return;
+  const allOpen = panels.every((p) => p.open);
+  toggle.dataset.state = allOpen ? 'collapse' : 'expand';
+  label.textContent = (allOpen ? toggle.dataset.collapse : toggle.dataset.expand) ?? '';
+};
+toggle?.addEventListener('click', () => {
+  const open = toggle.dataset.state !== 'collapse';
+  panels.forEach((p) => (p.open = open));
+  syncToggle();
+});
+panels.forEach((p) => p.addEventListener('toggle', syncToggle));
+syncToggle();
 
-const matches = (el: HTMLElement) =>
-  (!state.type || el.dataset.type === state.type) &&
-  (!state.focus || (el.dataset.focus ?? '').split('|').includes(state.focus));
-
-function render() {
-  let shown = 0;
-  for (const job of jobs) {
-    const ok = matches(job);
-    job.hidden = !ok;
-    if (ok) shown++;
-  }
-  for (const bar of bars) bar.classList.toggle('is-dim', !matches(bar));
-  for (const b of buttons) {
-    b.setAttribute('aria-pressed', String(state[b.dataset.group as Group] === (b.dataset.value ?? '')));
-  }
-  if (status) {
-    const filtered = state.type || state.focus;
-    status.textContent = filtered
-      ? (status.dataset.template ?? '').replace('{n}', String(shown)).replace('{total}', status.dataset.total ?? '')
-      : '';
-  }
-}
-
-for (const b of buttons) {
-  b.addEventListener('click', () => {
-    const group = b.dataset.group as Group;
-    const value = b.dataset.value ?? '';
-    state[group] = state[group] === value ? '' : value;
-    if (document.startViewTransition && !calm.matches) document.startViewTransition(render);
-    else render();
+// A bar in the career map opens its role in the list.
+for (const bar of bars) {
+  bar.addEventListener('click', () => {
+    const panel = document.querySelector<HTMLDetailsElement>(`#job-${CSS.escape(bar.dataset.job ?? '')} .job-card`);
+    if (panel) panel.open = true;
   });
 }
 

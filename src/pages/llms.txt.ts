@@ -46,7 +46,7 @@ ${certifications.map((c) => `- [${c.name}](${c.credly}) (${c.year})`).join('\n')
 
 ## Strengths
 
-Top 10 themes from Gallup's CliftonStrengths assessment, in his own words:
+Top 10 strengths from Gallup's CliftonStrengths assessment, in his own words:
 
 ${strengths.map((s) => `- ${s.name.en}: ${s.text.en}`).join('\n')}
 

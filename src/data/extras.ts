@@ -120,8 +120,8 @@ export const recommendations: Recommendation[] = [
   {
     original: 'en',
     quote: {
-      en: '[…] He is a great coworker with solid problem solving and good quality in UI5 and ABAP development. He covers complex business requirements in a simple and understandable way.',
-      es: '[…] Es un gran compañero, con una sólida capacidad de resolución de problemas y gran calidad en desarrollo UI5 y ABAP. Resuelve requisitos de negocio complejos de forma simple y comprensible.',
+      en: 'I highly recommend Cristian. He is a great coworker with solid problem solving and good quality in UI5 and ABAP development. He covers complex business requirements in a simple and understandable way.',
+      es: 'Recomiendo totalmente a Cristian. Es un gran compañero, con una sólida capacidad de resolución de problemas y gran calidad en desarrollo UI5 y ABAP. Resuelve requisitos de negocio complejos de forma simple y comprensible.',
     },
     role: { en: 'SAP Project Manager (SAP Champion)', es: 'SAP Project Manager (SAP Champion)' },
     relation: { en: 'Managed Cristian directly', es: 'Su responsable directo' },
