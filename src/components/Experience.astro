@@ -49,43 +49,46 @@ function duration(start: string, end: string | null) {
 ---
 
 <section id="experience" aria-labelledby="exp-title" class="experience">
-  <h2 id="exp-title" class="section-title">{t('exp.title')}</h2>
+  {/* Title and career map share a card, like "About" next to it. */}
+  <div class="card exp-intro p-6 md:p-8">
+    <h2 id="exp-title" class="section-title">{t('exp.title')}</h2>
 
-  <figure class="career-map card">
-    <figcaption class="map-caption">
-      <span>{t('exp.map')}</span>
-      <span class="legend" aria-hidden="true">
-        <span class="legend-item"><i class="swatch swatch--employee"></i>{t('exp.employee')}</span>
-        <span class="legend-item"><i class="swatch swatch--freelance"></i>{t('exp.freelance')}</span>
-      </span>
-    </figcaption>
-    {/* Visual summary only: the list below carries the real content. */}
-    <div class="map-scroll" role="region" tabindex="0" aria-label={`${t('exp.map')} – ${t('exp.map.hint')}`} data-map-scroll>
-      <div class="map-inner" style={`--years:${years.length};--lanes:${lanes.length}`} aria-hidden="true">
-        <div class="map-body">
-          {years.map((y) => <span class="year-line" style={`left:${pct(y * 12)}%`} />)}
-          {
-            bars.map((b) => (
-              <a
-                href={`#job-${b.job.id}`}
-                tabindex="-1"
-                draggable="false"
-                class={`bar bar--${b.job.engagement}`}
-                data-job={b.job.id}
-                style={`left:${b.left}%;width:${b.width}%;--lane:${b.lane}`}
-                title={`${b.job.company} · ${formatMonth(b.job.start, lang)} – ${b.job.end ? formatMonth(b.job.end, lang) : t('exp.present')}`}
-              >
-                <span>{b.job.company}</span>
-              </a>
-            ))
-          }
-        </div>
-        <div class="map-axis">
-          {years.map((y) => <span style={`left:${pct(y * 12)}%`}>{y}</span>)}
+    <figure class="career-map">
+      <figcaption class="map-caption">
+        <span>{t('exp.map')}</span>
+        <span class="legend" aria-hidden="true">
+          <span class="legend-item"><i class="swatch swatch--employee"></i>{t('exp.employee')}</span>
+          <span class="legend-item"><i class="swatch swatch--freelance"></i>{t('exp.freelance')}</span>
+        </span>
+      </figcaption>
+      {/* Visual summary only: the list below carries the real content. */}
+      <div class="map-scroll" role="region" tabindex="0" aria-label={`${t('exp.map')} – ${t('exp.map.hint')}`} data-map-scroll>
+        <div class="map-inner" style={`--years:${years.length};--lanes:${lanes.length}`} aria-hidden="true">
+          <div class="map-body">
+            {years.map((y) => <span class="year-line" style={`left:${pct(y * 12)}%`} />)}
+            {
+              bars.map((b) => (
+                <a
+                  href={`#job-${b.job.id}`}
+                  tabindex="-1"
+                  draggable="false"
+                  class={`bar bar--${b.job.engagement}`}
+                  data-job={b.job.id}
+                  style={`left:${b.left}%;width:${b.width}%;--lane:${b.lane}`}
+                  title={`${b.job.company} · ${formatMonth(b.job.start, lang)} – ${b.job.end ? formatMonth(b.job.end, lang) : t('exp.present')}`}
+                >
+                  <span>{b.job.company}</span>
+                </a>
+              ))
+            }
+          </div>
+          <div class="map-axis">
+            {years.map((y) => <span style={`left:${pct(y * 12)}%`}>{y}</span>)}
+          </div>
         </div>
       </div>
-    </div>
-  </figure>
+    </figure>
+  </div>
 
   {/* Each role is a collapsible panel; only the current one starts open. */}
   <div class="jobs-bar">
@@ -150,17 +153,13 @@ function duration(start: string, end: string | null) {
 </script>
 
 <style>
-  @media (min-width: 1024px) {
-    /* Line the heading up with "About", whose card has 2rem padding + 1px border. */
-    .experience {
-      padding-top: calc(2rem + 1px);
-    }
-  }
-
   .career-map {
-    margin-top: 1.75rem;
+    margin-top: 1.5rem;
     padding: 1rem 0 0.5rem;
     overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 1rem;
+    background: color-mix(in oklab, var(--bg) 35%, transparent);
   }
   .map-caption {
     display: flex;

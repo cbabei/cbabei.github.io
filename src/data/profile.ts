@@ -51,14 +51,17 @@ export const profile = {
   } satisfies L10n<string[]>,
   pillars: [
     {
-      icon: 'sparkles',
-      title: { en: 'Product first', es: 'Producto primero' },
-      text: { en: 'Clean, reliable apps people enjoy using.', es: 'Apps limpias y fiables que da gusto usar.' },
+      icon: 'user',
+      title: { en: 'User-centred', es: 'El usuario, en el centro' },
+      text: {
+        en: 'Designed around the people who will use it, not just the spec.',
+        es: 'Pienso en quien lo va a usar, no solo en lo que se pide.',
+      },
     },
     {
       icon: 'compass',
       title: { en: 'Big picture', es: 'Visión global' },
-      text: { en: 'Architecture, UX and delivery, hand in hand.', es: 'Arquitectura, UX y entrega, de la mano.' },
+      text: { en: 'Frontend, backend and integrations as one solution.', es: 'Front, back e integraciones como una sola solución.' },
     },
     {
       icon: 'book',

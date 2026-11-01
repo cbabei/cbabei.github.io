@@ -111,25 +111,23 @@ const domains: Record<Strength['domain'], { from: string; to: string }> = {
     flex-direction: column;
     align-items: stretch;
     gap: 0.75rem;
-    padding: 1rem 1.1rem 1.1rem;
+    padding: 1.75rem 1rem 1.1rem;
     text-align: left;
     font: inherit;
     color: inherit;
     cursor: pointer;
     transition: transform 0.35s cubic-bezier(0.3, 0.7, 0.4, 1.4), border-color 0.3s;
   }
-  /* The name centred in the card; the number stays in the top-left corner. */
+  /* The number as a small tag in the top-left corner; the name centred on its own line below it. */
   .strength-top {
-    position: relative;
-    padding-inline: 1.1rem;
     text-align: center;
   }
   .strength-num {
     position: absolute;
-    left: 0;
-    top: 0.2rem;
+    left: 0.85rem;
+    top: 0.6rem;
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     font-weight: 600;
     color: var(--muted);
   }
@@ -145,9 +143,8 @@ const domains: Record<Strength['domain'], { from: string; to: string }> = {
     box-shadow: 0 8px 16px -8px var(--to);
     transition: rotate 0.5s cubic-bezier(0.3, 0.7, 0.4, 1.6);
   }
-  /* Sized so the longest name ("Responsabilidad") fits on one line beside the number. */
   .strength-name {
-    font-size: clamp(0.82rem, 1.25vw, 1rem);
+    font-size: 1rem;
     font-weight: 700;
     line-height: 1.25;
   }
@@ -170,6 +167,8 @@ const domains: Record<Strength['domain'], { from: string; to: string }> = {
     color: var(--fg);
     font-size: 0.84rem;
     line-height: 1.5;
+    /* Even line lengths, and never a single word left alone on the last line. */
+    text-wrap: pretty;
     opacity: 0;
     translate: 0 0.5rem;
     pointer-events: none;

@@ -124,6 +124,8 @@ const translated = (r: Recommendation) => r.original !== lang;
     flex-direction: column;
     padding: 1.5rem;
     font-size: 0.95rem;
+    /* Even line lengths, and never a single word left alone on the last line. */
+    text-wrap: pretty;
     transition: transform 0.35s cubic-bezier(0.3, 0.7, 0.4, 1.4), border-color 0.3s;
   }
   .reco:hover {

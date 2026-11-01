@@ -173,8 +173,8 @@ export const hobbies: Hobby[] = [
     icon: 'heart',
     title: { en: 'Family', es: 'Familia' },
     text: {
-      en: 'Married, with a dog called Bambi (meet him below). We love to travel and enjoy a good meal together.',
-      es: 'Casado y con un perro que se llama Bambi (te lo presento más abajo). Nos encanta viajar y disfrutar juntos de una buena comida.',
+      en: 'Married, with a dog called Bambi (meet him below). We love to travel and enjoy our time together, whether just hanging out or doing activities.',
+      es: 'Casado y con un perro que se llama Bambi (te lo presento más abajo). Nos encanta viajar y disfrutar del tiempo juntos, ya sea pasando el rato o haciendo actividades.',
     },
   },
   {
@@ -189,16 +189,16 @@ export const hobbies: Hobby[] = [
     icon: 'gamepad',
     title: { en: 'Gaming', es: 'Videojuegos' },
     text: {
-      en: 'One of my oldest passions. I’ve always loved RPGs, strategy games, roguelikes and soulslikes such as Dark Souls.',
-      es: 'Una de mis pasiones más antiguas. Siempre me han encantado los juegos de rol, de estrategia, los roguelikes y los soulslikes como Dark Souls.',
+      en: 'A hobby I’ve kept since I was a kid. I’ve always loved RPGs, strategy games, roguelikes and soulslikes such as Dark Souls.',
+      es: 'Uno de los pasatiempos que conservo desde pequeño. Siempre me han encantado los juegos de rol, de estrategia, los roguelikes y los soulslikes como Dark Souls.',
     },
   },
   {
     icon: 'book',
     title: { en: 'Reading', es: 'Lectura' },
     text: {
-      en: 'Classic books of adventure, fantasy and mystery. And Asian comics too, like manga and manhua.',
-      es: 'Libros de los de toda la vida, de aventuras, fantasía y misterio. Y también cómic asiático, como el manga o el manhua.',
+      en: 'All kinds of books, from adventure, fantasy and mystery to Asian comics like manga and manhua.',
+      es: 'Todo tipo de libros, desde aventuras, fantasía y misterio hasta cómic asiático, como el manga o el manhua.',
     },
   },
 ];
