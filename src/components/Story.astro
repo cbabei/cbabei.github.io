@@ -71,6 +71,48 @@ const sections = story
       <Content />
     </div>
   </article>
+
+  <script>
+    // Highlight in the index the section being read: the last heading above the top third of the screen,
+    // or the last one once the page reaches the end. Checked once per frame while scrolling, when the
+    // layout is already up to date, and first from an IntersectionObserver so loading doesn't force a layout.
+    const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-toc] a')];
+    const headings = links.map((a) => document.getElementById(decodeURIComponent(a.hash.slice(1))));
+
+    if (links.length && headings.every(Boolean)) {
+      let current = -1;
+      const update = () => {
+        const line = innerHeight / 3;
+        let i = 0;
+        headings.forEach((h, n) => {
+          if (h!.getBoundingClientRect().top <= line) i = n;
+        });
+        if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) i = headings.length - 1;
+        if (i === current) return;
+        current = i;
+        links.forEach((a, n) => (n === i ? a.setAttribute('aria-current', 'location') : a.removeAttribute('aria-current')));
+      };
+
+      let queued = false;
+      addEventListener(
+        'scroll',
+        () => {
+          if (queued) return;
+          queued = true;
+          requestAnimationFrame(() => {
+            queued = false;
+            update();
+          });
+        },
+        { passive: true },
+      );
+      const first = new IntersectionObserver(() => {
+        first.disconnect();
+        update();
+      });
+      first.observe(headings[0]!);
+    }
+  </script>
 </Base>
 
 <style>
@@ -290,44 +332,3 @@ const sections = story
   }
 </style>
 
-<script>
-  // Highlight in the index the section being read: the last heading above the top third of the screen,
-  // or the last one once the page reaches the end. Checked once per frame while scrolling, when the
-  // layout is already up to date, and first from an IntersectionObserver so loading doesn't force a layout.
-  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-toc] a')];
-  const headings = links.map((a) => document.getElementById(decodeURIComponent(a.hash.slice(1))));
-
-  if (links.length && headings.every(Boolean)) {
-    let current = -1;
-    const update = () => {
-      const line = innerHeight / 3;
-      let i = 0;
-      headings.forEach((h, n) => {
-        if (h!.getBoundingClientRect().top <= line) i = n;
-      });
-      if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) i = headings.length - 1;
-      if (i === current) return;
-      current = i;
-      links.forEach((a, n) => (n === i ? a.setAttribute('aria-current', 'location') : a.removeAttribute('aria-current')));
-    };
-
-    let queued = false;
-    addEventListener(
-      'scroll',
-      () => {
-        if (queued) return;
-        queued = true;
-        requestAnimationFrame(() => {
-          queued = false;
-          update();
-        });
-      },
-      { passive: true },
-    );
-    const first = new IntersectionObserver(() => {
-      first.disconnect();
-      update();
-    });
-    first.observe(headings[0]!);
-  }
-</script>

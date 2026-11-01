@@ -115,7 +115,7 @@ function duration(start: string, end: string | null) {
                 <span class="job-role">{j.role[lang]}</span>
                 <span class="job-company"> · {j.company}</span>
               </h3>
-              <p class="job-dates">
+              <span class="job-dates">
                 <span class="job-range">
                   <time datetime={j.start}>{formatMonth(j.start, lang)}</time>
                   <span aria-hidden="true">–</span>
@@ -123,7 +123,7 @@ function duration(start: string, end: string | null) {
                   {j.end ? <time datetime={j.end}>{formatMonth(j.end, lang)}</time> : <span class="now">{t('exp.present')}</span>}
                 </span>
                 <span class="job-duration">{duration(j.start, j.end)}</span>
-              </p>
+              </span>
             </summary>
             <div class="job-body">
               <p class="job-meta">

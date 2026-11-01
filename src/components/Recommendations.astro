@@ -16,20 +16,17 @@ const translated = (r: Recommendation) => r.original !== lang;
 <section id="recommendations" aria-labelledby="reco-title" class="container-page py-12 md:py-16">
   <div class="reveal">
     <h2 id="reco-title" class="section-title">{t('reco.title')}</h2>
-    <p class="mt-3 text-muted">{t('reco.lead')}</p>
+    <p class="mt-3 text-muted">{t('reco.lead')} {t('reco.featured')}</p>
   </div>
 
   <figure class="featured reveal">
-    <p class="featured-intro">{t('reco.featured')}</p>
-    <div class="featured-quote">
-      <blockquote>
-        <p>“{featuredQuote.quote[lang]}”</p>
-      </blockquote>
-      {translated(featuredQuote) && <p class="translated">({t('reco.translated')})</p>}
-      <figcaption>
-        {featuredQuote.role[lang]} · {featuredQuote.relation[lang]} · {featuredQuote.year}
-      </figcaption>
-    </div>
+    <blockquote>
+      <p>“{featuredQuote.quote[lang]}”</p>
+    </blockquote>
+    {translated(featuredQuote) && <p class="translated">({t('reco.translated')})</p>}
+    <figcaption>
+      {featuredQuote.role[lang]} · {featuredQuote.relation[lang]} · {featuredQuote.year}
+    </figcaption>
   </figure>
 
   <ul class="reco-grid">
@@ -68,17 +65,10 @@ const translated = (r: Recommendation) => r.original !== lang;
 </section>
 
 <style>
-  .featured {
-    margin-top: 0.35rem;
-  }
-  .featured-intro {
-    margin-bottom: 1rem;
-    color: var(--muted);
-  }
   /* The quote that sums him up: centred, with who said it aligned to the right under it. */
-  .featured-quote {
+  .featured {
     max-width: 52rem;
-    margin-inline: auto;
+    margin: 1.25rem auto 0;
     text-align: center;
   }
   .featured blockquote {
