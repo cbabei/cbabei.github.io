@@ -69,8 +69,12 @@ const { Content } = lang === 'es' ? es : en;
     align-items: center;
     gap: 1.5rem;
   }
-  .story-head :global(.story-avatar) {
+  /* The <picture> around the avatar is the flex item: it must not shrink, or the circle turns into an oval. */
+  .story-head :global(picture) {
     flex: none;
+  }
+  .story-head :global(.story-avatar) {
+    display: block;
     width: 6.5rem;
     height: 6.5rem;
     object-fit: cover;
