@@ -1,48 +1,27 @@
 // Bambi chases the rabbit across the footer meadow. Visitors can drag the rabbit (or use the
 // arrow keys on it) to lead Bambi to it, and now and then a treat drops in that they can drag (or
 // click) to give him.
-// The scene stays still behind a start button until the first game of the visit; that first game
-// opens with Bambi waiting and a glowing rabbit that shows how to play. After it, other pages of
-// the same visit start the game on their own. Static scene when JS is off.
+// On every page load the scene stays still behind a start button; the game then opens with Bambi
+// waiting and a glowing rabbit that shows how to play. Nothing is remembered, so a reload starts
+// over. Static scene when JS is off.
 const meadow = document.querySelector<HTMLElement>('[data-meadow]');
-const PLAYED = 'meadow-played';
-
-function played() {
-  try {
-    return sessionStorage.getItem(PLAYED) === '1';
-  } catch {
-    return false;
-  }
-}
 
 if (meadow) {
-  if (played()) {
-    // Start only when the footer gets close, so the game doesn't measure the page while it loads.
-    new IntersectionObserver(
-      (entries, observer) => {
-        if (!entries[0].isIntersecting) return;
-        observer.disconnect();
-        start(meadow, false);
-      },
-      { rootMargin: '400px 0px' },
-    ).observe(meadow);
-  } else {
-    const startBtn = meadow.querySelector<HTMLButtonElement>('[data-start]')!;
-    meadow.classList.add('is-locked');
-    startBtn.hidden = false;
-    startBtn.addEventListener(
-      'click',
-      () => {
-        startBtn.hidden = true;
-        meadow.classList.remove('is-locked');
-        start(meadow, true);
-      },
-      { once: true },
-    );
-  }
+  const startBtn = meadow.querySelector<HTMLButtonElement>('[data-start]')!;
+  meadow.classList.add('is-locked');
+  startBtn.hidden = false;
+  startBtn.addEventListener(
+    'click',
+    () => {
+      startBtn.hidden = true;
+      meadow.classList.remove('is-locked');
+      start(meadow);
+    },
+    { once: true },
+  );
 }
 
-function start(meadow: HTMLElement, tutorial: boolean) {
+function start(meadow: HTMLElement) {
   const dogEl = meadow.querySelector<HTMLElement>('[data-dog]')!;
   const rabbitEl = meadow.querySelector<HTMLButtonElement>('[data-rabbit]')!;
   const hintEl = meadow.querySelector<HTMLElement>('[data-hint]')!;
@@ -62,14 +41,14 @@ function start(meadow: HTMLElement, tutorial: boolean) {
   let RW = rabbitEl.offsetWidth;
 
   type RabbitMode = 'rest' | 'roam' | 'flee' | 'leap' | 'held' | 'caught';
-  // The first game opens with Bambi trotting in from the left and the rabbit waiting mid-meadow.
-  let intro = tutorial;
-  const rabbitStart = tutorial ? (W - RW) / 2 : W * 0.6;
-  const dog = { x: tutorial ? -DW : W * 0.15, dir: 1, pause: 0, jumpCooldown: 0 };
+  // The game opens with Bambi trotting in from the left and the rabbit waiting mid-meadow.
+  let intro = true;
+  const rabbitStart = (W - RW) / 2;
+  const dog = { x: -DW, dir: 1, pause: 0, jumpCooldown: 0 };
   const rabbit = {
     x: rabbitStart,
     y: 0,
-    dir: tutorial ? -1 : 1,
+    dir: -1,
     mode: 'rest' as RabbitMode,
     target: rabbitStart,
     rest: 1.2,
@@ -87,7 +66,7 @@ function start(meadow: HTMLElement, tutorial: boolean) {
 
   meadow.classList.add('is-live');
   rabbitEl.disabled = false;
-  if (tutorial) rabbitEl.classList.add('glow');
+  rabbitEl.classList.add('glow');
   dogEl.addEventListener('animationend', (e) => {
     if (e.animationName === 'jump' || e.animationName.endsWith('jump')) dogEl.classList.remove('jump');
   });
@@ -108,9 +87,6 @@ function start(meadow: HTMLElement, tutorial: boolean) {
     intro = false;
     hintEl.hidden = true;
     rabbitEl.classList.remove('glow');
-    try {
-      sessionStorage.setItem(PLAYED, '1');
-    } catch {}
   }
 
   function say(text: string, ms: number) {
@@ -468,5 +444,5 @@ function start(meadow: HTMLElement, tutorial: boolean) {
 
   render();
   // Keyboard users land on the rabbit, ready to move it with the arrows.
-  if (tutorial) rabbitEl.focus({ preventScroll: true });
+  rabbitEl.focus({ preventScroll: true });
 }

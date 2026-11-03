@@ -35,7 +35,8 @@ grass += 'V60z';
       {t('contact.lead').split(/(?<=\.) /).map((s) => <span class="block">{s}</span>)}
     </p>
     <div class="mt-8 flex flex-wrap justify-center gap-3 reveal">
-      <a class="btn btn-primary" href={site.linkedin} rel="me noopener" target="_blank">
+      {/* Both secondary: the game button below is the one call to action on this screen. */}
+      <a class="btn btn-ghost" href={site.linkedin} rel="me noopener" target="_blank">
         <Icon name="linkedin" size={17} />
         {t('contact.cta')}
       </a>
@@ -87,7 +88,7 @@ grass += 'V60z';
     </svg>
 
     {/* Revealed by the script, so without JS the scene simply stays still. */}
-    <button type="button" class="btn btn-primary meadow-start" data-start hidden>
+    <button type="button" class="meadow-start" data-start hidden>
       <Icon name="paw" size={18} />
       {t('game.start')}
     </button>
@@ -113,7 +114,7 @@ grass += 'V60z';
   .meadow {
     position: relative;
     height: 13rem;
-    margin-top: 2.5rem;
+    margin-top: 4.5rem;
     touch-action: pan-y;
     user-select: none;
     -webkit-user-select: none;
@@ -351,13 +352,66 @@ grass += 'V60z';
     opacity: 0.55;
     filter: saturate(0.5);
   }
+  /* A toy-like game button in Bambi's ginger, with a raised edge that sinks when pressed: on purpose
+     nothing like the page's link buttons. */
   .meadow-start {
+    --edge: #a65a1f;
     position: absolute;
     left: 50%;
-    top: 2.6rem;
+    top: 1.6rem;
     translate: -50% 0;
     z-index: 5;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.7rem 1.3rem 0.75rem;
+    border: 2px solid var(--edge);
+    border-radius: 14px;
+    background: linear-gradient(#f2b26b, #df8f45);
+    color: #2b1608;
+    font-weight: 800;
+    font-size: 0.95rem;
+    letter-spacing: 0.01em;
     white-space: nowrap;
+    cursor: pointer;
+    box-shadow:
+      0 5px 0 var(--edge),
+      0 12px 22px -8px rgb(0 0 0 / 0.35);
+    transition:
+      transform 0.15s,
+      box-shadow 0.15s;
+    animation: start-nudge 3.2s ease-in-out 1s infinite;
+  }
+  .meadow-start:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 7px 0 var(--edge),
+      0 16px 26px -8px rgb(0 0 0 / 0.4);
+    animation-play-state: paused;
+  }
+  .meadow-start:active {
+    transform: translateY(4px);
+    box-shadow:
+      0 1px 0 var(--edge),
+      0 6px 12px -8px rgb(0 0 0 / 0.35);
+  }
+  .meadow-start:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+  }
+  /* Now and then a little hop, so it reads as something to play with. */
+  @keyframes start-nudge {
+    0%,
+    84%,
+    100% {
+      translate: -50% 0;
+    }
+    90% {
+      translate: -50% -6px;
+    }
+    95% {
+      translate: -50% 0;
+    }
   }
   .meadow-start[hidden] {
     display: none;
