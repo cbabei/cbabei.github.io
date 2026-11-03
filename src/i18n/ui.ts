@@ -76,7 +76,7 @@ export const ui = {
     'lightbox.next': 'Next photo',
     'contact.title': 'Let’s talk',
     'contact.lead':
-      'I live in Spain and have been working remotely for several years. The quickest way to reach me is LinkedIn: send me a message and let’s talk.',
+      'The quickest way to reach me is LinkedIn: send me a message and let’s talk.',
     'contact.cta': 'Message me on LinkedIn',
     'game.label': 'Mini-game: help Bambi catch the rabbit',
     'game.start': 'Help Bambi catch the rabbit',
@@ -164,7 +164,7 @@ export const ui = {
     'lightbox.next': 'Foto siguiente',
     'contact.title': 'Hablemos',
     'contact.lead':
-      'Vivo en España y llevo varios años trabajando en remoto. La forma más rápida de contactarme es LinkedIn: escríbeme y hablamos.',
+      'La forma más rápida de contactarme es LinkedIn: escríbeme y hablamos.',
     'contact.cta': 'Escríbeme en LinkedIn',
     'game.label': 'Minijuego: ayuda a Bambi a atrapar al conejo',
     'game.start': 'Ayuda a Bambi a atrapar al conejo',
