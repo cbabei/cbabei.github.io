@@ -62,7 +62,8 @@ export async function profileSchema(lang: Lang, page: string, name: string, desc
         inLanguage: lang,
         isPartOf: { '@id': websiteId },
         mainEntity: { '@id': personId },
-        dateModified: new Date().toISOString().slice(0, 10),
+        // Google wants a full date-time with time zone, not just a date.
+        dateModified: new Date().toISOString().replace(/\.\d{3}Z$/, 'Z'),
       },
       person(lang, image),
     ],
