@@ -1,0 +1,221 @@
+import type { L10n } from '../i18n/ui';
+
+export interface Job {
+  id: string;
+  company: string;
+  role: L10n;
+  /** 'YYYY-MM' */
+  start: string;
+  /** 'YYYY-MM', or null while ongoing */
+  end: string | null;
+  location: L10n;
+  engagement: 'employee' | 'freelance';
+  highlights: L10n<string[]>;
+  /** Shown as chips under each role. */
+  tech: string[];
+}
+
+const barcelona: L10n = { en: 'Barcelona, Spain', es: 'Barcelona, España' };
+const seniorUI5: L10n = {
+  en: 'UI5 / UX / ABAP OO Senior Consultant',
+  es: 'Consultor Senior UI5 / UX / ABAP OO',
+};
+
+export const jobs: Job[] = [
+  {
+    id: 'zoi-2025',
+    company: 'Zoi',
+    role: { en: 'UI5 & ABAP Senior Consultant', es: 'Consultor Senior UI5 y ABAP' },
+    start: '2025-12',
+    end: null,
+    location: barcelona,
+    engagement: 'employee',
+    highlights: {
+      en: [
+        'Became a “Lead” in November 2026, a role focused on supporting colleagues’ personal and professional growth through coaching and mentoring.',
+        'Building SAPUI5 and ABAP OO solutions and pushing modern UX/UI best practices in every delivery.',
+        'Technical coordination of projects, from architecture design to delivery.',
+        'Researching and applying generative AI to speed up development: good practices, corporate agents and a shared knowledge base.',
+        'Earned seven SAP certifications in 2026, from Fiori and SAP Build to Integration, Generative AI and Joule Studio.',
+      ],
+      es: [
+        'Nombrado «Lead» en noviembre de 2026, un rol centrado en acompañar a compañeros en su crecimiento personal y profesional con coaching y tutorías.',
+        'Desarrollo de soluciones SAPUI5 y ABAP OO, impulsando buenas prácticas de UX/UI en todas las entregas.',
+        'Coordinación técnica de proyectos, del diseño de la arquitectura a la entrega.',
+        'Investigación y aplicación de IA generativa para acelerar el desarrollo: buenas prácticas, agentes corporativos y una base de conocimiento compartida.',
+        'Siete certificaciones SAP obtenidas en 2026, de Fiori y SAP Build a Integration, IA generativa y Joule Studio.',
+      ],
+    },
+    tech: ['SAPUI5', 'ABAP OO', 'SAP BTP', 'SAP Build', 'GenAI', 'Tech Lead'],
+  },
+  {
+    id: 'ey-2019',
+    engagement: 'freelance',
+    company: 'EY',
+    role: seniorUI5,
+    start: '2019-10',
+    end: '2025-12',
+    location: barcelona,
+    highlights: {
+      en: [
+        'Fiori Lead across concurrent projects: technical direction, development standards and full lifecycle of SAPUI5, OData and ABAP OO solutions.',
+        'Main technical point of contact during major S/4HANA upgrades, managing the Fiori Launchpad and applying Design Thinking.',
+      ],
+      es: [
+        'Fiori Lead en varios proyectos a la vez: dirección técnica, estándares de desarrollo y ciclo completo de soluciones SAPUI5, OData y ABAP OO.',
+        'Principal punto de contacto técnico en grandes upgrades de S/4HANA, gestionando el Fiori Launchpad y aplicando Design Thinking.',
+      ],
+    },
+    tech: ['SAPUI5', 'OData', 'ABAP OO', 'S/4HANA', 'Fiori Launchpad', 'Design Thinking', 'Tech Lead'],
+  },
+  {
+    id: 'code10-2024',
+    engagement: 'freelance',
+    company: 'CODE10',
+    role: { en: 'UI5 & UX Expert', es: 'Experto UI5 y UX' },
+    start: '2024-02',
+    end: '2025-01',
+    location: barcelona,
+    highlights: {
+      en: [
+        'Go-to expert for SAPUI5/Fiori in complex cloud environments, designing scalable application architectures.',
+        'Supervised project execution and set development best practices across the full lifecycle.',
+      ],
+      es: [
+        'Referente en SAPUI5/Fiori en entornos cloud complejos, diseñando arquitecturas de aplicación escalables.',
+        'Supervisión de la ejecución y definición de buenas prácticas de desarrollo en todo el ciclo de vida.',
+      ],
+    },
+    tech: ['SAPUI5', 'Fiori Elements', 'SAP BTP', 'Tech Lead'],
+  },
+  {
+    id: 'zoi-2023',
+    engagement: 'freelance',
+    company: 'Zoi',
+    role: { en: 'Fiori Senior Expert', es: 'Experto Senior Fiori' },
+    start: '2023-04',
+    end: '2024-01',
+    location: barcelona,
+    highlights: {
+      en: [
+        'Led full-lifecycle development of high-performance Fiori apps with SAPUI5, OData and ABAP OO.',
+        'Managed Fiori Launchpad, role-based access and custom branding, validating readiness for upgrades.',
+      ],
+      es: [
+        'Liderazgo del ciclo completo de desarrollo de apps Fiori de alto rendimiento con SAPUI5, OData y ABAP OO.',
+        'Gestión del Fiori Launchpad, accesos por rol y branding, validando la preparación para upgrades.',
+      ],
+    },
+    tech: ['SAPUI5', 'OData', 'ABAP OO', 'Fiori Launchpad'],
+  },
+  {
+    id: 'kps-2020',
+    engagement: 'freelance',
+    company: 'KPS Iberia',
+    role: seniorUI5,
+    start: '2020-07',
+    end: '2023-06',
+    location: barcelona,
+    highlights: {
+      en: [
+        'Designed and deployed custom Fiori apps on SAP S/4HANA Cloud with RAP, CDS views and OData.',
+        'Managed SAP BTP environments and applied Design Thinking for high-impact user experiences.',
+      ],
+      es: [
+        'Diseño y despliegue de apps Fiori a medida en SAP S/4HANA Cloud con RAP, vistas CDS y OData.',
+        'Gestión de entornos SAP BTP y aplicación de Design Thinking para experiencias de alto impacto.',
+      ],
+    },
+    tech: ['SAPUI5', 'RAP', 'CDS', 'OData', 'S/4HANA', 'SAP BTP', 'Design Thinking'],
+  },
+  {
+    id: 'excelium-2019',
+    engagement: 'freelance',
+    company: 'Excelium Consulting',
+    role: seniorUI5,
+    start: '2019-10',
+    end: '2020-03',
+    location: barcelona,
+    highlights: {
+      en: ['Custom Fiori apps (SAPUI5, OData, ABAP OO) for the Warehouse Management (WM) module.'],
+      es: ['Apps Fiori a medida (SAPUI5, OData, ABAP OO) para el módulo de Warehouse Management (WM).'],
+    },
+    tech: ['SAPUI5', 'OData', 'ABAP OO'],
+  },
+  {
+    id: 'averlance-2018',
+    engagement: 'freelance',
+    company: 'Averlance',
+    role: seniorUI5,
+    start: '2018-11',
+    end: '2020-12',
+    location: barcelona,
+    highlights: {
+      en: [
+        'Full-stack SAP (ABAP + SAPUI5) under Agile for international projects in Finland: Cash Management, Forecast Manager and Project Cost Planning.',
+        'Applied Design Thinking to build intuitive, user-centred business apps.',
+      ],
+      es: [
+        'SAP full stack (ABAP + SAPUI5) con metodología Agile en proyectos internacionales en Finlandia: Cash Management, Forecast Manager y Project Cost Planning.',
+        'Design Thinking aplicado para crear apps de negocio intuitivas y centradas en el usuario.',
+      ],
+    },
+    tech: ['SAPUI5', 'ABAP OO', 'Agile', 'Design Thinking'],
+  },
+  {
+    id: 'kps-2016',
+    engagement: 'employee',
+    company: 'KPS Iberia',
+    role: { en: 'Fiori / ABAP Consultant', es: 'Consultor Fiori / ABAP' },
+    start: '2016-11',
+    end: '2019-07',
+    location: barcelona,
+    highlights: {
+      en: [
+        'Backend business logic with ABAP OO and OData, integrated with custom SAPUI5 frontends under Agile.',
+        'Hybrid mobile apps and early work with IoT, HANA XS, chatbots and third-party JS libraries.',
+      ],
+      es: [
+        'Lógica de negocio con ABAP OO y OData integrada con frontends SAPUI5 a medida, con metodología Agile.',
+        'Apps móviles híbridas y primeros proyectos con IoT, HANA XS, chatbots y librerías JS de terceros.',
+      ],
+    },
+    tech: ['SAPUI5', 'ABAP OO', 'OData', 'Agile', 'JavaScript'],
+  },
+  {
+    id: 'capgemini-2015',
+    engagement: 'employee',
+    company: 'Capgemini',
+    role: { en: 'ABAP Consultant', es: 'Consultor ABAP' },
+    start: '2015-11',
+    end: '2016-10',
+    location: { en: 'Langreo, Spain', es: 'Langreo, España' },
+    highlights: {
+      en: ['SAP maintenance, incident management and enhancements in ABAP.'],
+      es: ['Mantenimiento SAP, gestión de incidencias y evolutivos en ABAP.'],
+    },
+    tech: ['ABAP OO'],
+  },
+  {
+    id: 'tst-2015',
+    engagement: 'employee',
+    company: 'TST Informática',
+    role: { en: 'Web / Java Developer', es: 'Desarrollador Web / Java' },
+    start: '2015-04',
+    end: '2015-09',
+    location: { en: 'Asturias, Spain', es: 'Asturias, España' },
+    highlights: {
+      en: ['Full-stack web development: WordPress and Joomla sites plus custom apps in Java, PHP and JavaScript.'],
+      es: ['Desarrollo web full stack: sitios WordPress y Joomla y apps a medida en Java, PHP y JavaScript.'],
+    },
+    tech: ['JavaScript'],
+  },
+];
+
+export const education = [
+  {
+    school: 'IES Monte Naranco',
+    title: { en: 'Higher Diploma in Web Application Development', es: 'CFGS Desarrollo de Aplicaciones Web' } satisfies L10n,
+    years: '2013 – 2015',
+  },
+];

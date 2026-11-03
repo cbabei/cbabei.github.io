@@ -1,0 +1,491 @@
+---
+import { type Lang, formatMonth, useTranslations } from '../i18n/ui';
+import { jobs } from '../data/experience';
+import Icon from './Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+// ---- Career map (built at compile time) ----
+const now = new Date();
+const nowIdx = now.getUTCFullYear() * 12 + now.getUTCMonth();
+const toIdx = (ym: string | null) => {
+  if (!ym) return nowIdx + 1;
+  const [y, m] = ym.split('-').map(Number);
+  return y * 12 + (m - 1);
+};
+const firstYear = Math.min(...jobs.map((j) => Number(j.start.slice(0, 4))));
+const lastYear = now.getUTCFullYear() + 1;
+const min = firstYear * 12;
+const span = lastYear * 12 - min;
+const pct = (idx: number) => ((idx - min) / span) * 100;
+
+const lanes: number[] = [];
+const bars = [...jobs]
+  .sort((a, b) => toIdx(a.start) - toIdx(b.start))
+  .map((j) => {
+    const s = toIdx(j.start);
+    const e = toIdx(j.end);
+    let lane = lanes.findIndex((end) => end <= s);
+    if (lane === -1) lane = lanes.push(e) - 1;
+    else lanes[lane] = e;
+    return { job: j, lane, left: pct(s), width: Math.max(pct(e) - pct(s), 1.2) };
+  });
+const years = Array.from({ length: lastYear - firstYear }, (_, i) => firstYear + i);
+
+function duration(start: string, end: string | null) {
+  const months = toIdx(end) - toIdx(start) + (end ? 1 : 0);
+  const y = Math.floor(months / 12);
+  const m = months % 12;
+  const parts =
+    lang === 'es'
+      ? [y && `${y} ${y > 1 ? 'años' : 'año'}`, m && `${m} ${m > 1 ? 'meses' : 'mes'}`]
+      : [y && `${y} ${y > 1 ? 'yrs' : 'yr'}`, m && `${m} ${m > 1 ? 'mos' : 'mo'}`];
+  return parts.filter(Boolean).join(' ');
+}
+---
+
+<section id="experience" aria-labelledby="exp-title" class="experience">
+  {/* Title and career map share a card, like "About" next to it. */}
+  <div class="card exp-intro p-6 md:p-8">
+    <h2 id="exp-title" class="section-title">{t('exp.title')}</h2>
+
+    <figure class="career-map">
+      <figcaption class="map-caption">
+        <span>{t('exp.map')}</span>
+        <span class="legend" aria-hidden="true">
+          <span class="legend-item"><i class="swatch swatch--employee"></i>{t('exp.employee')}</span>
+          <span class="legend-item"><i class="swatch swatch--freelance"></i>{t('exp.freelance')}</span>
+        </span>
+      </figcaption>
+      {/* Visual summary only: the list below carries the real content. */}
+      <div class="map-scroll" role="region" tabindex="0" aria-label={`${t('exp.map')} – ${t('exp.map.hint')}`} data-map-scroll>
+        <div class="map-inner" style={`--years:${years.length};--lanes:${lanes.length}`} aria-hidden="true">
+          <div class="map-body">
+            {years.map((y) => <span class="year-line" style={`left:${pct(y * 12)}%`} />)}
+            {
+              bars.map((b) => (
+                <a
+                  href={`#job-${b.job.id}`}
+                  tabindex="-1"
+                  draggable="false"
+                  class={`bar bar--${b.job.engagement}`}
+                  data-job={b.job.id}
+                  style={`left:${b.left}%;width:${b.width}%;--lane:${b.lane}`}
+                  title={`${b.job.company} · ${formatMonth(b.job.start, lang)} – ${b.job.end ? formatMonth(b.job.end, lang) : t('exp.present')}`}
+                >
+                  <span>{b.job.company}</span>
+                </a>
+              ))
+            }
+          </div>
+          <div class="map-axis">
+            {years.map((y) => <span style={`left:${pct(y * 12)}%`}>{y}</span>)}
+          </div>
+        </div>
+      </div>
+    </figure>
+  </div>
+
+  {/* Each role is a collapsible panel; only the current one starts open. */}
+  <div class="jobs-bar">
+    <button type="button" class="jobs-toggle" data-jobs="open" aria-controls="job-list">
+      <Icon name="chevron-down" size={15} />
+      {t('exp.expandAll')}
+    </button>
+    <button type="button" class="jobs-toggle jobs-toggle--close" data-jobs="close" aria-controls="job-list">
+      <Icon name="chevron-down" size={15} />
+      {t('exp.collapseAll')}
+    </button>
+  </div>
+
+  <ol id="job-list" class="jobs">
+    {
+      jobs.map((j, i) => (
+        <li id={`job-${j.id}`} class="job" data-job={j.id}>
+          <details class="job-card" open={i === 0}>
+            <summary class="job-head">
+              <span class="job-chevron" aria-hidden="true">
+                <Icon name="chevron-down" size={16} />
+              </span>
+              <h3 class="job-title">
+                <span class="job-role">{j.role[lang]}</span>
+                <span class="job-company"> · {j.company}</span>
+              </h3>
+              <span class="job-dates">
+                <span class="job-range">
+                  <time datetime={j.start}>{formatMonth(j.start, lang)}</time>
+                  <span aria-hidden="true">–</span>
+                  <span class="sr-only"> – </span>
+                  {j.end ? <time datetime={j.end}>{formatMonth(j.end, lang)}</time> : <span class="now">{t('exp.present')}</span>}
+                </span>
+                <span class="job-duration">{duration(j.start, j.end)}</span>
+              </span>
+            </summary>
+            <div class="job-body">
+              <p class="job-meta">
+                {j.location[lang]}
+                <span class={`badge badge--${j.engagement}`}>{t(`exp.${j.engagement}`)}</span>
+              </p>
+              <ul class="job-highlights">
+                {j.highlights[lang].map((h) => (
+                  <li>{h}</li>
+                ))}
+              </ul>
+              <ul class="job-tech" aria-label={t('exp.tech')}>
+                {j.tech.map((x) => (
+                  <li class="chip">{x}</li>
+                ))}
+              </ul>
+            </div>
+          </details>
+        </li>
+      ))
+    }
+  </ol>
+</section>
+
+<script>
+  import '../scripts/experience';
+</script>
+
+<style>
+  .career-map {
+    margin-top: 1.5rem;
+    padding: 1rem 0 0.5rem;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 1rem;
+    background: color-mix(in oklab, var(--bg) 35%, transparent);
+  }
+  .map-caption {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding-inline: 1.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+  }
+  .legend {
+    display: flex;
+    gap: 0.9rem;
+  }
+  .legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .swatch {
+    width: 0.9rem;
+    height: 0.5rem;
+    border-radius: 3px;
+  }
+
+  .map-scroll {
+    margin-top: 0.85rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--line) transparent;
+    cursor: grab;
+    mask-image: linear-gradient(to right, transparent, #000 1.25rem, #000 calc(100% - 1.25rem), transparent);
+  }
+  .map-scroll.is-dragging {
+    cursor: grabbing;
+    user-select: none;
+  }
+  .map-inner {
+    width: max(100%, calc(var(--years) * 6.5rem));
+    padding-inline: 1.25rem;
+  }
+  .map-body {
+    --bar-h: 1.7rem;
+    --gap: 0.4rem;
+    position: relative;
+    height: calc(var(--lanes) * (var(--bar-h) + var(--gap)));
+  }
+  .year-line {
+    position: absolute;
+    top: -0.25rem;
+    bottom: -0.25rem;
+    width: 1px;
+    background: var(--line);
+  }
+  .bar {
+    position: absolute;
+    top: calc(var(--lane) * (var(--bar-h) + var(--gap)));
+    height: var(--bar-h);
+    display: flex;
+    align-items: center;
+    /* clip (not hidden) so the sticky label below follows the map's own scroll. */
+    overflow: clip;
+    padding-inline: 0.5rem;
+    border-radius: 0.45rem;
+    color: var(--bg);
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    transform-origin: left;
+    transition: opacity 0.3s, filter 0.3s, transform 0.3s;
+    -webkit-user-drag: none;
+  }
+  .bar span {
+    position: sticky;
+    left: 1.75rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .swatch--employee,
+  .bar--employee {
+    background: var(--accent);
+  }
+  .swatch--freelance,
+  .bar--freelance {
+    background: repeating-linear-gradient(
+      -45deg,
+      var(--accent) 0 6px,
+      color-mix(in oklab, var(--accent) 72%, var(--bg)) 6px 12px
+    );
+  }
+  .bar:hover,
+  .bar.is-linked {
+    transform: scaleY(1.15);
+    filter: brightness(1.12);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .bar {
+      animation: grow 1.1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+      animation-delay: calc(var(--lane) * 80ms);
+    }
+  }
+  @keyframes grow {
+    from {
+      clip-path: inset(0 100% 0 0 round 0.45rem);
+    }
+  }
+  .map-axis {
+    position: relative;
+    height: 1.6rem;
+    margin-top: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--muted);
+  }
+  .map-axis span {
+    position: absolute;
+    padding-left: 0.3rem;
+  }
+
+  .jobs-bar {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+  }
+  .jobs-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.75rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .jobs-toggle:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  .jobs-toggle--close :global(svg) {
+    rotate: 180deg;
+  }
+
+  .jobs {
+    margin-top: 0.75rem;
+    display: grid;
+    gap: 0.6rem;
+  }
+  /* A panel: the header (role · company, dates on the right) is always visible; the rest unfolds. */
+  .job-card {
+    border: 1px solid var(--line);
+    border-radius: 1rem;
+    background: color-mix(in oklab, var(--surface) 70%, transparent);
+    transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+  }
+  .job-card:hover,
+  .job.is-linked .job-card {
+    border-color: color-mix(in oklab, var(--accent) 55%, var(--line));
+    box-shadow: 0 12px 32px -16px var(--shadow);
+  }
+  .job-card[open] {
+    background: var(--surface);
+  }
+  .job-card[open] .job-head {
+    padding-bottom: 0.35rem;
+  }
+  .job-head {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.25rem 0.85rem;
+    padding: 1rem 1.15rem;
+    cursor: pointer;
+    list-style: none;
+  }
+  .job-head::-webkit-details-marker {
+    display: none;
+  }
+  .job-head:focus-visible {
+    outline-offset: -2px;
+    border-radius: 1rem;
+  }
+  .job-chevron {
+    display: grid;
+    place-items: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 0.5rem;
+    color: var(--accent);
+    background: var(--accent-soft);
+    rotate: -90deg;
+    transition: rotate 0.3s;
+  }
+  .job-card[open] .job-chevron {
+    rotate: 0deg;
+  }
+  .job-dates {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.15rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    line-height: 1.3;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    color: var(--muted);
+  }
+  .job-range {
+    display: flex;
+    gap: 0.35rem;
+    font-weight: 700;
+    color: var(--fg);
+  }
+  .job-range .now {
+    color: var(--accent);
+  }
+  .job-duration {
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  /* Phones: the dates go under the title. */
+  @media (max-width: 639px) {
+    .job-head {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+    .job-dates {
+      grid-column: 2;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.25rem 0.6rem;
+    }
+  }
+  .job-body {
+    padding: 0 1.15rem 1.15rem calc(1.15rem + 1.6rem + 0.85rem);
+  }
+  @media (max-width: 639px) {
+    .job-body {
+      padding-left: 1.15rem;
+    }
+  }
+  /* Open and close smoothly where the browser can animate to auto height. */
+  @media (prefers-reduced-motion: no-preference) {
+    .job-card {
+      interpolate-size: allow-keywords;
+    }
+    .job-card::details-content {
+      height: 0;
+      overflow: clip;
+      transition: height 0.35s ease, content-visibility 0.35s allow-discrete;
+    }
+    .job-card[open]::details-content {
+      height: auto;
+    }
+  }
+  .job-title {
+    font-size: 1.02rem;
+    font-weight: 650;
+    line-height: 1.35;
+  }
+  .job-company {
+    color: var(--accent);
+  }
+  .job-meta {
+    margin-top: 0.2rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .badge {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+  }
+  .badge--employee {
+    background: var(--accent);
+    color: var(--bg);
+  }
+  .job-highlights {
+    margin-top: 0.75rem;
+    display: grid;
+    gap: 0.45rem;
+    font-size: 0.93rem;
+    color: var(--muted);
+  }
+  .job-highlights li {
+    position: relative;
+    padding-left: 1.1rem;
+  }
+  .job-highlights li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 2px;
+    rotate: 45deg;
+    background: var(--accent);
+    opacity: 0.7;
+  }
+  .job-tech {
+    margin-top: 0.9rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+</style>

@@ -1,0 +1,173 @@
+---
+// Bambi: Andalusian podenco (ginger, cream chest and paws, blue pizza collar), side view facing right.
+// Legs, tail and head are animated from CSS in Footer.astro; keep the class names.
+---
+
+<svg class="dog-svg" viewBox="0 -22 172 140" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="bambi-coat" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b8662a" />
+      <stop offset=".55" stop-color="#d48848" />
+      <stop offset="1" stop-color="#e2a066" />
+    </linearGradient>
+    <linearGradient id="bambi-far" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#a65a22" />
+      <stop offset="1" stop-color="#bf7638" />
+    </linearGradient>
+  </defs>
+
+  <g class="tail"><path d="M43 52C31 57 22 53 18 43c-3-8-2-16 2-22" /></g>
+
+  {/* far legs */}
+  <g class="leg leg-bf">
+    <path d="M34 56C42 52 54 56 55 66C56 74 52 80 48 86L42 96C41 100 42 106 44 111L39 111C37 106 36 101 36 96C34 90 31 82 31 72C31 64 31 59 34 56z" class="far" />
+    <path d="M38 110h7c3 0 5 2 5 6H38z" class="paw-far" />
+  </g>
+  <g class="leg leg-ff">
+    <path d="M101 66c3-1 9-1 11 1l-2 33c0 4 0 7 1 10h-8l-1-10z" class="far" />
+    <path d="M102 109h8c3 0 5 3 5 7h-13z" class="paw-far" />
+  </g>
+
+  {/* body */}
+  <path
+    d="M44 50c8-6 26-5 44-5 12 0 20-3 26-1 10 4 16 12 14 22-2 10-10 16-20 16-12 0-22-5-32-7-8-1-14 1-20-1-10-2-18-8-18-16 0-4 2-7 6-8z"
+    fill="url(#bambi-coat)"
+  />
+  <path d="M106 46c4-10 10-20 18-28l14 8c-4 10-8 22-10 34-8-4-16-9-22-14z" fill="url(#bambi-coat)" />
+  <path d="M128 60c2-10 6-22 10-32l4 1c-2 11-6 23-10 33 0 8-6 15-14 19 6-6 10-12 10-21z" class="cream" />
+
+  {/* near legs */}
+  <g class="leg leg-bn">
+    <path d="M40 56C48 52 60 56 61 66C62 74 58 80 54 86L48 96C47 100 48 106 50 111L45 111C43 106 42 101 42 96C40 90 37 82 37 72C37 64 37 59 40 56z" class="near" />
+    <path d="M44 110h7c3 0 5 2 5 6H44z" class="cream" />
+  </g>
+  <g class="leg leg-fn">
+    <path d="M110 66c3-1 9-1 11 1l-2 33c0 4 0 7 1 10h-8l-1-10z" class="near" />
+    <path d="M111 109h8c3 0 5 3 5 7h-13z" class="cream" />
+  </g>
+
+  {/* light blue collar with little pizza slices, like his real one */}
+  <path d="M110 40c6 6 15 8 24 4" class="collar" />
+  <g>
+    <g transform="translate(114 43)">
+      <path d="M-1.9-1.5h3.8L0 2.2z" class="slice" />
+      <path d="M-1.9-1.5h3.8" class="crust" />
+      <circle cx="0" cy="-.2" r=".55" class="pepperoni" />
+    </g>
+    <g transform="translate(121 46.2)">
+      <path d="M-1.9-1.5h3.8L0 2.2z" class="slice" />
+      <path d="M-1.9-1.5h3.8" class="crust" />
+      <circle cx="0" cy="-.2" r=".55" class="pepperoni" />
+    </g>
+    <g transform="translate(128 46)">
+      <path d="M-1.9-1.5h3.8L0 2.2z" class="slice" />
+      <path d="M-1.9-1.5h3.8" class="crust" />
+      <circle cx="0" cy="-.2" r=".55" class="pepperoni" />
+    </g>
+  </g>
+
+  <g class="head">
+    <path d="M120 12c-4-8-5-18-2-25 4 7 8 14 10 22z" class="ear-far" />
+    <ellipse cx="132" cy="17" rx="11" ry="9.5" fill="url(#bambi-coat)" />
+    <path d="M127 11c10-1 22 6 31 12 2 2 1 5-2 6-8 2-18 1-26-2z" fill="url(#bambi-coat)" />
+    <path d="M131 26c8 3 17 3 25 1-6 4-16 5-25 2z" class="cream" />
+    <path d="M126 10c-3-9-3-18 1-27 5 8 9 16 9 26z" fill="url(#bambi-coat)" />
+    <path d="M128 6c-2-6-2-12 0-18 3 6 5 11 5 17z" class="ear-in" />
+    <path d="M156 28c-6 2-14 2-21 0" class="mouth" />
+    <ellipse cx="157.6" cy="23.6" rx="3" ry="2.5" class="nose" />
+    <ellipse cx="139" cy="15" rx="2.6" ry="2" transform="rotate(-12 139 15)" class="eye" />
+    <circle cx="139.4" cy="14.8" r="1.2" class="pupil" />
+    <circle cx="140" cy="14.2" r="0.5" fill="#fff" />
+    <path d="M136 12.6c2-1 4.5-1.2 6.5-.3" class="lid" />
+    <ellipse cx="152" cy="31" rx="2.6" ry="3.6" class="tongue" />
+  </g>
+</svg>
+
+<style>
+  .dog-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .near {
+    fill: #cf8445;
+  }
+  .far {
+    fill: url(#bambi-far);
+  }
+  .cream {
+    fill: #f4e4cc;
+  }
+  .paw-far {
+    fill: #dcc8ab;
+  }
+  .ear-far {
+    fill: #a65a22;
+  }
+  .ear-in {
+    fill: #e7b293;
+  }
+  .collar {
+    fill: none;
+    stroke: #6fa8d8;
+    stroke-width: 5;
+    stroke-linecap: round;
+  }
+  .slice {
+    fill: #f6c453;
+  }
+  .crust {
+    fill: none;
+    stroke: #c9822f;
+    stroke-width: 0.8;
+    stroke-linecap: round;
+  }
+  .pepperoni {
+    fill: #d23f2d;
+  }
+  .mouth,
+  .lid {
+    fill: none;
+    stroke: #5c3214;
+    stroke-width: 1;
+    stroke-linecap: round;
+  }
+  .nose {
+    fill: #2b1f1a;
+  }
+  .eye {
+    fill: #a36a2a;
+  }
+  .pupil {
+    fill: #1b120d;
+  }
+  .tongue {
+    fill: #ef7f8a;
+    opacity: 0;
+  }
+  .tail path {
+    fill: none;
+    stroke: #c47534;
+    stroke-width: 4.5;
+    stroke-linecap: round;
+  }
+  .tail {
+    transform-origin: 43px 52px;
+  }
+  .leg-bf {
+    transform-origin: 46px 62px;
+  }
+  .leg-bn {
+    transform-origin: 52px 62px;
+  }
+  .leg-ff {
+    transform-origin: 106px 70px;
+  }
+  .leg-fn {
+    transform-origin: 115px 70px;
+  }
+  .head {
+    transform-origin: 128px 26px;
+  }
+</style>

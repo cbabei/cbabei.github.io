@@ -1,0 +1,37 @@
+---
+import { Picture } from 'astro:assets';
+import photo from '../assets/portrait/cristian.png';
+
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+{/* Real photo (background removed), cropped at the chest and faded out at the bottom. */}
+<div class:list={['portrait', className]}>
+  <Picture
+    src={photo}
+    alt="Cristian Babei"
+    formats={['avif', 'webp']}
+    fallbackFormat="webp"
+    widths={[320, 480, 640, 800]}
+    sizes="(min-width: 900px) 24rem, 17rem"
+    loading="eager"
+    fetchpriority="high"
+    class="portrait-photo"
+  />
+</div>
+
+<style>
+  .portrait {
+    position: relative;
+  }
+  .portrait-photo {
+    display: block;
+    width: 100%;
+    height: auto;
+    mask-image: linear-gradient(to bottom, #000 62%, transparent 98%);
+    filter: drop-shadow(0 10px 24px rgb(0 0 0 / 0.18));
+  }
+</style>
