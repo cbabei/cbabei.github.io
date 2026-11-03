@@ -27,7 +27,8 @@ grass += 'V60z';
 ---
 
 <footer id="contact" class="site-footer" aria-labelledby="contact-title">
-  <div class="container-page relative z-10 pt-14 text-center md:pt-16">
+  <div class="container-page pt-12 md:pt-16"><hr class="section-divider" /></div>
+  <div class="container-page relative z-10 pt-12 text-center md:pt-16">
     <h2 id="contact-title" class="section-title reveal">{t('contact.title')}</h2>
     {/* One sentence per line, so "LinkedIn: write to me" isn't split in two on wide screens. */}
     <p class="mx-auto mt-3 max-w-2xl text-muted reveal">
@@ -45,10 +46,10 @@ grass += 'V60z';
     </div>
   </div>
 
-  {/* Bambi chases a rabbit across the meadow. Visitors can drag the rabbit and, when one drops in,
-       drag (or click) a treat to give it to him (scripts/meadow.ts). */}
+  {/* Bambi chases a rabbit across the meadow. The scene waits for the start button; then visitors can
+       drag the rabbit and, when one drops in, drag (or click) a treat to give it to him (scripts/meadow.ts). */}
   <div class="meadow" id="meadow" role="group" aria-label={t('game.label')} data-meadow>
-    <p class="bubble" data-bubble aria-live="polite" data-prompt={t('game.prompt')} data-caught={t('game.caught')} data-treat-prompt={t('game.treatPrompt')} data-yum={t('game.yum')}></p>
+    <p class="bubble" data-bubble aria-live="polite" data-caught={t('game.caught')} data-treat-prompt={t('game.treatPrompt')} data-yum={t('game.yum')}></p>
     <p class="score" data-score-wrap hidden>{t('game.score')}: <span data-score>0</span> · {t('game.treats')}: <span data-treats>0</span></p>
 
     <svg class="grass grass--back" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
@@ -59,9 +60,14 @@ grass += 'V60z';
     <div class="actor dog" data-dog aria-hidden="true">
       <div class="actor-flip"><div class="actor-body"><BambiDog /></div></div>
     </div>
-    <button type="button" class="actor rabbit" data-rabbit aria-label={t('game.rabbit')}>
+    <button type="button" class="actor rabbit" data-rabbit aria-label={t('game.rabbit')} disabled>
       <span class="actor-flip"><span class="actor-body"><Rabbit /></span></span>
     </button>
+    {/* First game of the visit: shown over the rabbit until it is picked up. */}
+    <p class="hint" data-hint hidden aria-hidden="true">
+      <span class="hint-hand"><Icon name="pointer" size={18} /></span>
+      {t('game.hint')}
+    </p>
     <button type="button" class="treat" data-treat hidden aria-label={t('game.treat')}>
       <svg viewBox="0 0 40 20" aria-hidden="true">
         <g fill="#e3a65f">
@@ -79,6 +85,12 @@ grass += 'V60z';
     <svg class="grass grass--front" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true">
       <path d={grass} />
     </svg>
+
+    {/* Revealed by the script, so without JS the scene simply stays still. */}
+    <button type="button" class="btn btn-primary meadow-start" data-start hidden>
+      <Icon name="paw" size={18} />
+      {t('game.start')}
+    </button>
   </div>
 
   <div class="footer-bar">
@@ -328,6 +340,120 @@ grass += 'V60z';
     50% {
       rotate: -10deg;
       scale: 1.08;
+    }
+  }
+
+  /* Before the game starts: a still, faded scene behind the start button. */
+  .meadow .actor {
+    transition: opacity 0.6s, filter 0.6s;
+  }
+  .meadow.is-locked .actor {
+    opacity: 0.55;
+    filter: saturate(0.5);
+  }
+  .meadow-start {
+    position: absolute;
+    left: 50%;
+    top: 2.6rem;
+    translate: -50% 0;
+    z-index: 5;
+    white-space: nowrap;
+  }
+  .meadow-start[hidden] {
+    display: none;
+  }
+
+  /* First game: the rabbit glows and a hint shows how to play. */
+  .rabbit.glow {
+    --ring: color-mix(in oklab, #e5482f, #f6c453 var(--mix));
+    filter: drop-shadow(0 0 8px color-mix(in oklab, rgb(229 72 47 / 0.6), rgb(255 214 120 / 0.85) var(--mix)));
+  }
+  .rabbit.glow::before,
+  .rabbit.glow::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 55%;
+    width: 3.6rem;
+    aspect-ratio: 1;
+    border: calc(3px - var(--p) * 1px) solid var(--ring);
+    border-radius: 50%;
+    translate: -50% -50%;
+    opacity: 0;
+    pointer-events: none;
+    animation: treat-ping 1.6s ease-out infinite;
+  }
+  .rabbit.glow::after {
+    animation-delay: 0.8s;
+  }
+  .hint {
+    position: absolute;
+    left: 0;
+    bottom: 4.6rem;
+    translate: -50% 0;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 999px;
+    background: var(--surface-strong);
+    border: 1px solid var(--line);
+    box-shadow: 0 8px 20px -10px var(--shadow);
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+    pointer-events: none;
+    animation: hint-in 0.4s ease-out;
+  }
+  .hint[hidden] {
+    display: none;
+  }
+  /* Small tail pointing down at the rabbit. */
+  .hint::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -5px;
+    width: 9px;
+    height: 9px;
+    translate: -50% 0;
+    rotate: 45deg;
+    background: inherit;
+    border: inherit;
+    border-width: 0 1px 1px 0;
+  }
+  .hint-hand {
+    display: flex;
+    color: var(--accent);
+    animation: hint-drag 1.8s ease-in-out infinite;
+  }
+  @keyframes hint-in {
+    from {
+      opacity: 0;
+      translate: -50% 6px;
+    }
+  }
+  /* A hand that grabs and pulls towards Bambi, on the left. */
+  @keyframes hint-drag {
+    0%,
+    15% {
+      translate: 0 0;
+      scale: 1;
+      opacity: 1;
+    }
+    25% {
+      scale: 0.82;
+    }
+    70% {
+      translate: -10px 0;
+      scale: 0.82;
+      opacity: 1;
+    }
+    85%,
+    100% {
+      translate: -10px 0;
+      opacity: 0;
     }
   }
 

@@ -1,25 +1,51 @@
 // Bambi chases the rabbit across the footer meadow. Visitors can drag the rabbit (or use the
 // arrow keys on it) to lead Bambi to it, and now and then a treat drops in that they can drag (or
 // click) to give him.
-// Static scene when motion is reduced or JS is off.
+// The scene stays still behind a start button until the first game of the visit; that first game
+// opens with Bambi waiting and a glowing rabbit that shows how to play. After it, other pages of
+// the same visit start the game on their own. Static scene when JS is off.
 const meadow = document.querySelector<HTMLElement>('[data-meadow]');
-const calm = matchMedia('(prefers-reduced-motion: reduce)');
+const PLAYED = 'meadow-played';
 
-// Start only when the footer gets close, so the game doesn't measure the page while it loads.
-if (meadow && !calm.matches) {
-  new IntersectionObserver(
-    (entries, observer) => {
-      if (!entries[0].isIntersecting) return;
-      observer.disconnect();
-      start(meadow);
-    },
-    { rootMargin: '400px 0px' },
-  ).observe(meadow);
+function played() {
+  try {
+    return sessionStorage.getItem(PLAYED) === '1';
+  } catch {
+    return false;
+  }
 }
 
-function start(meadow: HTMLElement) {
+if (meadow) {
+  if (played()) {
+    // Start only when the footer gets close, so the game doesn't measure the page while it loads.
+    new IntersectionObserver(
+      (entries, observer) => {
+        if (!entries[0].isIntersecting) return;
+        observer.disconnect();
+        start(meadow, false);
+      },
+      { rootMargin: '400px 0px' },
+    ).observe(meadow);
+  } else {
+    const startBtn = meadow.querySelector<HTMLButtonElement>('[data-start]')!;
+    meadow.classList.add('is-locked');
+    startBtn.hidden = false;
+    startBtn.addEventListener(
+      'click',
+      () => {
+        startBtn.hidden = true;
+        meadow.classList.remove('is-locked');
+        start(meadow, true);
+      },
+      { once: true },
+    );
+  }
+}
+
+function start(meadow: HTMLElement, tutorial: boolean) {
   const dogEl = meadow.querySelector<HTMLElement>('[data-dog]')!;
   const rabbitEl = meadow.querySelector<HTMLButtonElement>('[data-rabbit]')!;
+  const hintEl = meadow.querySelector<HTMLElement>('[data-hint]')!;
   const bubble = meadow.querySelector<HTMLElement>('[data-bubble]')!;
   const scoreEl = meadow.querySelector<HTMLElement>('[data-score]')!;
   const scoreWrap = meadow.querySelector<HTMLElement>('[data-score-wrap]')!;
@@ -36,13 +62,16 @@ function start(meadow: HTMLElement) {
   let RW = rabbitEl.offsetWidth;
 
   type RabbitMode = 'rest' | 'roam' | 'flee' | 'leap' | 'held' | 'caught';
-  const dog = { x: W * 0.15, dir: 1, pause: 0, jumpCooldown: 0 };
+  // The first game opens with Bambi trotting in from the left and the rabbit waiting mid-meadow.
+  let intro = tutorial;
+  const rabbitStart = tutorial ? (W - RW) / 2 : W * 0.6;
+  const dog = { x: tutorial ? -DW : W * 0.15, dir: 1, pause: 0, jumpCooldown: 0 };
   const rabbit = {
-    x: W * 0.6,
+    x: rabbitStart,
     y: 0,
-    dir: 1,
+    dir: tutorial ? -1 : 1,
     mode: 'rest' as RabbitMode,
-    target: W * 0.6,
+    target: rabbitStart,
     rest: 1.2,
     leapFrom: 0,
     manualUntil: 0,
@@ -54,10 +83,11 @@ function start(meadow: HTMLElement) {
   let score = 0;
   let running = false;
   let last = 0;
-  let promptShown = false;
   let bubbleTimer = 0;
 
   meadow.classList.add('is-live');
+  rabbitEl.disabled = false;
+  if (tutorial) rabbitEl.classList.add('glow');
   dogEl.addEventListener('animationend', (e) => {
     if (e.animationName === 'jump' || e.animationName.endsWith('jump')) dogEl.classList.remove('jump');
   });
@@ -68,6 +98,20 @@ function start(meadow: HTMLElement) {
   const goingForTreat = () => treat.state === 'given';
   const dogTarget = () => (goingForTreat() ? treat.x + TW / 2 : rabbitCenter());
   const eager = () => goingForTreat() || isHeld();
+
+  // Where Bambi waits during the intro: a short way to the left of the rabbit, looking at it.
+  const introSpot = () => Math.max(0, rabbit.x - DW - Math.min(110, W * 0.12));
+
+  // The visitor has picked up the rabbit: the hint has done its job and the game runs as usual.
+  function endIntro() {
+    if (!intro) return;
+    intro = false;
+    hintEl.hidden = true;
+    rabbitEl.classList.remove('glow');
+    try {
+      sessionStorage.setItem(PLAYED, '1');
+    } catch {}
+  }
 
   function say(text: string, ms: number) {
     bubble.textContent = text;
@@ -98,6 +142,7 @@ function start(meadow: HTMLElement) {
 
     // Back to the ground after being dropped mid-air.
     if (rabbit.mode !== 'leap' && rabbit.y < 0) rabbit.y = Math.min(0, rabbit.y + 420 * dt);
+    if (intro) return;
 
     const dist = Math.abs(mouth() - rabbitCenter());
     if ((rabbit.mode === 'rest' || rabbit.mode === 'roam') && dist < 120) fleeFromDog();
@@ -131,6 +176,14 @@ function start(meadow: HTMLElement) {
   }
 
   function moveDog(dt: number) {
+    if (intro) {
+      // Trot in, then wait for the visitor; the hint appears once Bambi is in place.
+      const dx = introSpot() - dog.x;
+      dog.dir = 1;
+      dog.x += Math.sign(dx) * Math.min(Math.abs(dx), SPEED.dogRoam * dt);
+      if (Math.abs(dx) < 1 && hintEl.hidden) hintEl.hidden = false;
+      return;
+    }
     if (rabbit.mode === 'caught' && !goingForTreat()) return;
     if (dog.pause > 0) {
       dog.pause -= dt;
@@ -219,7 +272,7 @@ function start(meadow: HTMLElement) {
   function updateTreat(dt: number) {
     // Dropped mid-air: fall back to the grass.
     if (!treat.held && treat.y < 0) treat.y = Math.min(0, treat.y + 420 * dt);
-    if (treat.state === 'given') return;
+    if (treat.state === 'given' || intro) return;
     treat.timer -= dt;
     if (treat.timer > 0) return;
     if (treat.state === 'waiting') {
@@ -290,10 +343,11 @@ function start(meadow: HTMLElement) {
   treatEl.addEventListener('pointercancel', dropTreat);
 
   function render() {
-    const dogMoving =
-      dog.pause <= 0 &&
-      (rabbit.mode !== 'caught' || goingForTreat()) &&
-      Math.abs(mouth() - dogTarget()) > (eager() ? 8 : 55);
+    const dogMoving = intro
+      ? Math.abs(introSpot() - dog.x) >= 1
+      : dog.pause <= 0 &&
+        (rabbit.mode !== 'caught' || goingForTreat()) &&
+        Math.abs(mouth() - dogTarget()) > (eager() ? 8 : 55);
     dogEl.classList.toggle('running', dogMoving);
     dogEl.classList.toggle('face-left', dog.dir < 0);
     dogEl.style.transform = `translate3d(${dog.x}px,0,0)`;
@@ -302,6 +356,7 @@ function start(meadow: HTMLElement) {
     rabbitEl.classList.toggle('hopping', hopping);
     rabbitEl.classList.toggle('face-left', rabbit.dir < 0);
     rabbitEl.style.transform = `translate3d(${rabbit.x}px,${rabbit.y}px,0)`;
+    if (intro) hintEl.style.left = `${rabbitCenter()}px`;
     if (treat.state !== 'none') {
       treatEl.style.left = `${treat.x}px`;
       treatEl.style.transform = `translateY(${treat.y}px)`;
@@ -335,12 +390,8 @@ function start(meadow: HTMLElement) {
     ([e]) => {
       visible = e.isIntersecting;
       setRunning(visible && !document.hidden);
-      if (visible && e.intersectionRatio > 0.5 && !promptShown) {
-        promptShown = true;
-        say(bubble.dataset.prompt ?? '', 7000);
-      }
     },
-    { threshold: [0, 0.5] },
+    { threshold: 0 },
   ).observe(meadow);
   document.addEventListener('visibilitychange', () => setRunning(visible && !document.hidden));
 
@@ -373,6 +424,7 @@ function start(meadow: HTMLElement) {
     startClientY = e.clientY;
     rabbit.mode = 'held';
     bubble.classList.remove('show');
+    endIntro();
   });
   rabbitEl.addEventListener('pointermove', (e) => {
     if (rabbit.mode !== 'held' || !rabbitEl.hasPointerCapture(e.pointerId)) return;
@@ -411,7 +463,10 @@ function start(meadow: HTMLElement) {
     rabbit.rest = 2.5;
     rabbit.manualUntil = performance.now() + 2500;
     bubble.classList.remove('show');
+    endIntro();
   });
 
   render();
+  // Keyboard users land on the rabbit, ready to move it with the arrows.
+  if (tutorial) rabbitEl.focus({ preventScroll: true });
 }
