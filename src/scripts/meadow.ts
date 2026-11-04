@@ -52,11 +52,13 @@ function setup(meadow: HTMLElement) {
   let RW = rabbitEl.offsetWidth;
 
   type RabbitMode = 'rest' | 'roam' | 'flee' | 'leap' | 'held' | 'caught';
-  // Opening scene: Bambi on the left looking at the rabbit, with enough meadow between them that
-  // visitors see the rabbit move in their hand before Bambi reaches it.
+  // Opening scene: Bambi and the rabbit mirror each other around the centred start button (about 40%
+  // and 60% of a wide meadow), always with enough grass between them that visitors see the rabbit
+  // move in their hand before Bambi reaches it.
   let intro = true;
-  const dogStart = clamp(W / 2 - DW - Math.max(120, W * 0.22), 4, W - DW);
-  const rabbitStart = Math.min(Math.max(W / 2, dogStart + DW * 0.93 + 160) - RW / 2, W - RW - 8);
+  const offset = Math.max(W * 0.1, (DW + RW) / 4 + 60);
+  const dogStart = clamp(W / 2 - offset - DW / 2, 4, W - DW);
+  const rabbitStart = clamp(W / 2 + offset - RW / 2, 0, W - RW - 8);
   const dog = { x: dogStart, dir: 1, pause: 0, jumpCooldown: 0 };
   const rabbit = {
     x: rabbitStart,
