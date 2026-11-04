@@ -40,7 +40,8 @@ export const profile = {
   stats: [
     { value: `${yearsInSap}+`, label: { en: 'years in SAP', es: 'años en SAP' } },
     { value: String(certifications.length), label: { en: 'certifications', es: 'certificaciones' } },
-    { value: 'E2E', label: { en: 'from design to go-live', es: 'del diseño al go-live' } },
+    // Non-breaking hyphen (U+2011), so "go-live" never splits across two lines.
+    { value: 'E2E', label: { en: 'from design to go‑live', es: 'del diseño al go‑live' } },
   ],
   about: {
     en: [

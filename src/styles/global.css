@@ -113,6 +113,27 @@
     background: var(--bg);
     pointer-events: none;
   }
+  /* No word left alone on the last line: titles split evenly, paragraphs avoid a short last line. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+  p,
+  li,
+  dd,
+  blockquote,
+  figcaption {
+    text-wrap: pretty;
+  }
+  /* Our own pressed and hover states replace the grey/blue flash Android and iOS paint on taps. */
+  a,
+  button,
+  summary,
+  label {
+    -webkit-tap-highlight-color: transparent;
+  }
   ::selection {
     background: var(--accent);
     color: var(--bg);
@@ -169,7 +190,7 @@
     padding: 0.25rem 0.7rem;
     border-radius: 999px;
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     line-height: 1.5;
     color: var(--accent);
     background: var(--accent-soft);

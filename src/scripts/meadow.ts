@@ -111,10 +111,11 @@ function setup(meadow: HTMLElement) {
     const farTarget = dogLeft ? W - RW - rand(0, W * 0.15) : rand(0, W * 0.15);
     const cornered = dogLeft ? rabbit.x > W - RW - 70 : rabbit.x < 70;
     if (cornered) {
-      // Nowhere to run: jump over Bambi to the other side.
+      // Nowhere to run: jump over Bambi and land just behind him, whatever the screen width.
       rabbit.mode = 'leap';
       rabbit.leapFrom = rabbit.x;
-      rabbit.target = dogLeft ? rand(0, W * 0.25) : W - RW - rand(0, W * 0.25);
+      const clear = rand(30, 90);
+      rabbit.target = clamp(dogLeft ? dog.x - RW - clear : dog.x + DW + clear, 0, W - RW);
       dog.pause = 0.45;
     } else {
       rabbit.mode = 'flee';

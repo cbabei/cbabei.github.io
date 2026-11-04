@@ -50,8 +50,9 @@ const ogLocale = { en: 'en_US', es: 'es_ES' } as const;
       )
     }
 
-    <meta name="theme-color" content="#f3f8fd" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0a1426" media="(prefers-color-scheme: dark)" />
+    {/* Follows the site's theme (set by the scripts below), not the system's, so the browser bar matches the page. */}
+    <meta name="theme-color" content="#f3f8fd" />
+
     {/* The body font, fetched right away instead of after the CSS is read (same file as in global.css). */}
     <link rel="preload" href={interFont} as="font" type="font/woff2" crossorigin />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -92,6 +93,7 @@ const ogLocale = { en: 'en_US', es: 'es_ES' } as const;
           theme = hour >= 18 || hour < 7 ? 'dark' : 'light';
         }
         root.dataset.theme = theme;
+        document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#0a1426' : '#f3f8fd');
       })();
     </script>
   </head>

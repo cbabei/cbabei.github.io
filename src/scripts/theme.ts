@@ -6,6 +6,8 @@ const current = (): Theme => (root.dataset.theme === 'dark' ? 'dark' : 'light');
 
 function sync() {
   const dark = current() === 'dark';
+  // The browser bar takes the page's background (--bg in global.css).
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#0a1426' : '#f3f8fd');
   document.querySelectorAll<HTMLElement>('[data-theme-toggle]').forEach((el) => {
     el.setAttribute('aria-pressed', String(dark));
     const label = dark ? el.dataset.labelDark : el.dataset.labelLight;
