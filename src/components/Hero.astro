@@ -31,6 +31,7 @@ const t = useTranslations(lang);
       </span>
       <span class="hint hint-day" aria-hidden="true">← {t('theme.hint')}</span>
       <span class="hint hint-night" aria-hidden="true">{t('theme.hint')} →</span>
+      <span class="hint hint-below" aria-hidden="true">↑ {t('theme.hint')}</span>
     </button>
   </div>
 
@@ -44,7 +45,8 @@ const t = useTranslations(lang);
       <div class="mt-8 flex flex-wrap gap-3">
         <a class="btn btn-primary" href={site.linkedin} rel="me noopener" target="_blank">
           <Icon name="linkedin" size={17} />
-          {t('hero.cta.linkedin')}
+          <span class="label-long">{t('hero.cta.linkedin')}</span>
+          <span class="label-short">{t('hero.cta.linkedin.short')}</span>
         </a>
         <a class="btn btn-ghost" href={localePath(lang, 'about')}>
           {t('hero.cta.story')}
@@ -213,6 +215,18 @@ const t = useTranslations(lang);
     opacity: calc(var(--p) * 3 - 2);
     animation: nudge-right 2.4s ease-in-out infinite;
   }
+  .hint-below {
+    display: none;
+    top: calc(100% + 0.6rem);
+    left: 50%;
+    translate: -50% 0;
+    animation: nudge-up 2.4s ease-in-out infinite;
+  }
+  @keyframes nudge-up {
+    50% {
+      translate: -50% -4px;
+    }
+  }
   :global(:root[data-theme='dark']) .hint-day,
   :global(:root[data-theme='light']) .hint-night,
   :global(.theme-touched) .hint {
@@ -303,13 +317,45 @@ const t = useTranslations(lang);
     width: min(100%, 17rem);
     margin-inline: auto;
   }
-  /* One column on phones: the photo goes first and smaller, so the face is on the first screen. */
+  /* One column (phones and small tablets): the photo goes first, up in the top-left corner, and the
+     sun/moon stays put in the top-right corner. Switching theme spins it in place instead of
+     crossing the screen: it dips as if turning with the Earth and comes back as the other one. */
   @media (max-width: 899.98px) {
+    .hero-inner {
+      padding-top: 2.75rem;
+      justify-content: flex-start;
+    }
     .hero-avatar {
       order: -1;
-      width: 10rem;
+      width: 12rem;
       margin-inline: 0;
-      margin-bottom: -1.75rem;
+      margin-bottom: -2rem;
+    }
+    .celestial {
+      translate: calc(100cqw - var(--size)) calc(sin(var(--p) * 180deg) * 1.75rem);
+      scale: calc(1 - var(--p) * 0.15 - sin(var(--p) * 180deg) * 0.35);
+    }
+    .orb {
+      rotate: calc(var(--p) * 360deg);
+    }
+    .hint-day,
+    .hint-night {
+      display: none;
+    }
+    .hint-below {
+      display: block;
+    }
+  }
+  .label-short {
+    display: none;
+  }
+  /* Short labels on phones, so both hero buttons fit on one row. */
+  @media (max-width: 639.98px) {
+    .label-long {
+      display: none;
+    }
+    .label-short {
+      display: inline;
     }
   }
   @media (min-width: 900px) {
