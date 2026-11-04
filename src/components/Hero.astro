@@ -303,6 +303,15 @@ const t = useTranslations(lang);
     width: min(100%, 17rem);
     margin-inline: auto;
   }
+  /* One column on phones: the photo goes first and smaller, so the face is on the first screen. */
+  @media (max-width: 899.98px) {
+    .hero-avatar {
+      order: -1;
+      width: 10rem;
+      margin-inline: 0;
+      margin-bottom: -1.75rem;
+    }
+  }
   @media (min-width: 900px) {
     .hero-avatar {
       width: min(100%, 24rem);
